@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "586476792805",
+    "project_id": "stuble-4abc1",
+    "storage_bucket": "stuble-4abc1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586476792805:android:e5f0ce2caf158ede92dd0c",
+        "android_client_info": {
+          "package_name": "com.company.stuble"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJ8NU7IHE1Z_U6dQeR5P011OGQGK5Rk8I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
