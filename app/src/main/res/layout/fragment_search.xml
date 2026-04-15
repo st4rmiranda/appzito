@@ -1,14 +1,169 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchFragment">
+    android:background="#FAFBFF"> <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="O que vamos \nestudar? 📚"
+        android:textColor="#2D3243"
+        android:textSize="28sp"
+        android:textStyle="bold" />
 
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/containerBarra"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/fundo_barra_pesquisa"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:elevation="2dp">
+
+        <EditText
+            android:id="@+id/etPesquisa"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:hint="Pesquisar matéria..."
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:textColor="#000000"
+            android:textColorHint="#9E9E9E"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/btnPesquisar"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_search"
+            app:tint="#2D3243" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Categorias"
+        android:textColor="#2D3243"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardLinguagens"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="#E0F7FA"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Linguagens e \nCódigos"
+                android:textColor="#006064"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:alpha="0.8"
+                android:src="@drawable/ic_book"
+                app:tint="#006064" />
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardExatas"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="#FFEBEE"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Matemática e \nExatas"
+                android:textColor="#B71C1C"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:alpha="0.8"
+                android:src="@drawable/ic_calculate"
+                app:tint="#B71C1C" />
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardBiologia"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="#E8F5E9"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Ciências da \nNatureza"
+                android:textColor="#1B5E20"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:alpha="0.8"
+                android:src="@drawable/ic_biotech"
+                app:tint="#1B5E20" />
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+
+
+</LinearLayout>
+</ScrollView>

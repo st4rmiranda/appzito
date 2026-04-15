@@ -1,14 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA"
+    android:background="#FAFBFF"
     tools:context=".HomeFragment">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
@@ -18,27 +17,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            android:paddingTop="60dp"  android:paddingBottom="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Olá, Usuário!"
-                android:textColor="#212121"
-                android:textSize="24sp"
+                android:text="Olá, Estudante! 👋"
+                android:textColor="#2D3243"
+                android:textSize="28sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pronto para a meta de hoje?"
-                android:textColor="#757575"
+                android:alpha="0.7"
+                android:text="O que vamos aprender hoje?"
+                android:textColor="#2D3243"
                 android:textSize="16sp" />
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -47,66 +48,73 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Progresso do Plano de Estudo"
+                        android:text="Sua Meta Diária"
+                        android:textColor="#2D3243"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <ProgressBar
                         style="@android:style/Widget.Material.ProgressBar.Horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:progress="0"
-                        android:progressTint="#6200EE" />
+                        android:layout_height="8dp"
+                        android:layout_marginTop="16dp"
+                        android:progress="35"
+                        android:progressDrawable="@drawable/custom_progress_bar" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="0 de 20 questões resolvidas hoje"
-                        android:textSize="12sp" />
+                        android:layout_marginTop="8dp"
+                        android:alpha="0.6"
+                        android:text="7 de 20 questões resolvidas"
+                        android:textColor="#2D3243"
+                        android:textSize="13sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnStartQuestions"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginTop="24dp"
-                android:text="PRATICAR AGORA"
+                android:layout_height="70dp"
+                android:layout_marginTop="30dp"
+                android:text="Iniciar Prática IA"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/white"
-                app:backgroundTint="#6200EE"
-                app:cornerRadius="16dp"
+                app:backgroundTint="#6C63FF"
+                app:cornerRadius="20dp"
+                app:elevation="8dp"
                 app:icon="@drawable/ic_play"
-                app:iconSize="24dp"
-                app:iconGravity="textStart"
-                app:iconTint="@android:color/white" />
+                app:iconGravity="textStart" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="8dp"
-                android:text="Recursos"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="15dp"
+                android:text="Explorar Recursos"
+                android:textColor="#2D3243"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -118,20 +126,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    app:cardBackgroundColor="#D9CCF8"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp">
+                    app:cardBackgroundColor="#FFF4E5"
+                    app:cardCornerRadius="16dp"
+                    app:strokeWidth="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:padding="18dp">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:src="@drawable/ic_fire"
                             app:tint="#FF9800" />
 
@@ -139,7 +146,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:text="Ofensiva"
+                            android:text="Dias de Ofensiva: 5"
+                            android:textColor="#855B27"
                             android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -149,56 +157,59 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    app:cardBackgroundColor="#5EC8C2FF"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="#E3F2FD"
+                    app:cardCornerRadius="16dp"
+                    app:strokeWidth="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:padding="18dp">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_forum" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="Comunidade"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    app:cardBackgroundColor="#5EC8C2FF"
-                    app:cardCornerRadius="12dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
-
-                        <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:src="@drawable/ic_auto_fix"
-                            app:tint="#000080" />
+                            app:tint="#2196F3" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:text="Chat Box"
+                            android:text="Tirar Dúvidas com IA"
+                            android:textColor="#1976D2"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardBackgroundColor="#F3E5F5"
+                    app:cardCornerRadius="16dp"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="18dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_forum"
+                            app:tint="#9C27B0" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="Fórum da Comunidade"
+                            android:textColor="#7B1FA2"
                             android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>

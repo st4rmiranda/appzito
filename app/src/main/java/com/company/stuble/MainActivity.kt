@@ -1,22 +1,24 @@
 package com.company.stuble
-import androidx.fragment.app.Fragment // Resolve o erro de Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView // Resolve o erro de BottomNavigationView
+
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.BuildConfig
-import com.google.firebase.Firebase
-import com.google.firebase.database.database
-
+import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+        setContentView(R.layout.activity_main)
+
         val database = Firebase.database
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        trocarTela(HomeFragment())
+        if (savedInstanceState == null) {
+            trocarTela(HomeFragment())
+        }
 
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -39,8 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun trocarTela(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment) // Coloca a tela no "espaço vazio"
+            .replace(R.id.fragment_container, fragment)
             .commit()
     }
-    
 }
