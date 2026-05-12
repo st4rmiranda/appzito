@@ -65,4 +65,5 @@ dependencies {
     implementation("com.google.firebase:firebase-database-ktx:21.0.0")
     // Google Sign-In (para o login federado)
     implementation("com.google.android.gms:play-services-auth:21.1.1")
+    implementation("com.airbnb.android:lottie:6.4.0")
 }
