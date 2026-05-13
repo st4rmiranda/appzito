@@ -33,22 +33,20 @@
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:id="@+id/txtUserName"
+            android:id="@+id/txtNomeUsuario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Nome do Estudante"
-            android:textColor="#4A148C"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            android:text="Nome do Usuário"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/txtEmailUsuario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.7"
-            android:text="Nível 5 • Maratonista"
-            android:textColor="#4A148C"
-            android:textSize="14sp" />
+            android:text="email@exemplo.com"
+            android:textColor="#B3FFFFFF"
+            android:textSize="16sp" />
     </LinearLayout>
     </RelativeLayout>
 
