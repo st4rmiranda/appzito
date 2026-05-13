@@ -163,7 +163,39 @@
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardHumanas"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="#FFF9C4"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Ciências \nHumanas"
+                android:textColor="#F57F17"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:alpha="0.8"
+                android:src="@drawable/ic_public"
+                app:tint="#F57F17" />
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>
 </ScrollView>

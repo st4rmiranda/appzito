@@ -9,14 +9,14 @@ plugins {
 
 android {
     namespace = "com.company.stuble"
-    compileSdk = 36
+    compileSdk = 34
 
 
 
     defaultConfig {
         applicationId = "com.company.stuble"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -58,4 +58,15 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("com.google.ai.client.generativeai:generativeai:0.4.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation("com.google.firebase:firebase-auth-ktx:23.0.0")
+    // Realtime Database
+    implementation("com.google.firebase:firebase-database-ktx:21.0.0")
+    // Google Sign-In (para o login federado)
+    implementation("com.google.android.gms:play-services-auth:21.1.1")
+    implementation("com.airbnb.android:lottie:6.4.0")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.google.code.gson:gson:2.10.1")
 }
