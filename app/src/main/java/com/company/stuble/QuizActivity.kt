@@ -3,12 +3,15 @@ package com.company.stuble
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.NestedScrollView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 import com.google.gson.Gson
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -30,48 +33,68 @@ class QuizActivity : AppCompatActivity() {
     private var perguntaAtual: Pergunta? = null
     private var respondidas = 0
     private val TOTAL_QUESTOES = 20
+    private var modoExplicacaoAtivo = false
 
-    // Configuração de rede robusta para evitar quedas
+    private var filtroCompetencia: String? = null
+    private var ehTreinoLivre = false
+
+    // Configuração de rede unificada
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
         .build()
 
-    // Sua chave de API
-    private val apiKey = "AIzaSyB2jKu3SRs3t__XC311acYuzNCzaSLnCRg"
-
-    // Usando o modelo Flash mais atual para performance máxima
-    private val modeloGemini = "gemini-3.1-pro"
+    private val apiKey = BuildConfig.GEMINI_API_KEY
+    private val modeloGemini = "gemini-2.5-flash"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
 
-        // Inicia a primeira pergunta
+        // Resgata os filtros enviados pelo SearchFragment
+        filtroCompetencia = intent.getStringExtra("COMPETENCIA_FILTRO")
+        ehTreinoLivre = intent.getBooleanExtra("EH_TREINO_LIVRE", false)
+
         buscarPerguntaIA()
 
         findViewById<MaterialButton>(R.id.btnConfirm).setOnClickListener {
-            verificarResposta()
+            if (modoExplicacaoAtivo) {
+                modoExplicacaoAtivo = false
+                proximaQuestaoOuFinalizar()
+            } else {
+                verificarResposta()
+            }
         }
     }
 
     private fun buscarPerguntaIA() {
         runOnUiThread {
-            // Atualiza o contador na tela para o estudante
-            findViewById<TextView>(R.id.txtQuestion).text = "Questão ${respondidas + 1} de $TOTAL_QUESTOES\nGerando pergunta..."
+            findViewById<MaterialCardView>(R.id.cardExplanation).visibility = View.GONE
+            findViewById<TextView>(R.id.txtCount).text = "Questão ${respondidas + 1} de $TOTAL_QUESTOES"
+
+            val progressoPercentual = ((respondidas.toFloat() / TOTAL_QUESTOES) * 100).toInt()
+            findViewById<ProgressBar>(R.id.quizProgressBar).progress = progressoPercentual
+
+            findViewById<TextView>(R.id.txtQuestion).text = "Gerando pergunta pelo Mentor IA..."
             bloquearBotaoConfirmar(true)
         }
 
-        // Endpoint v1beta para suporte aos modelos mais novos
         val url = "https://generativelanguage.googleapis.com/v1beta/models/$modeloGemini:generateContent?key=$apiKey"
 
+        // DINÂMICA DE FILTRO: Força a IA a gerar sobre o card clicado, ou mantém livre
+        val promptFiltro = if (filtroCompetencia != null) {
+            "Você DEVE gerar uma pergunta estritamente sobre a competência: $filtroCompetencia."
+        } else {
+            "As perguntas devem se basear nas seguintes competências alternadas: Linguagens, Códigos e suas Tecnologias, Ciências Humanas e suas Tecnologias, Ciências da Natureza e suas Tecnologias, Matemática e suas Tecnologias."
+        }
+
         val promptText = """
-            Gere uma pergunta de vestibular em JSON: 
+            Gere uma pergunta de vestibular em JSON. $promptFiltro
+            Para desenvolver as questões, se baseie nos conteúdos de vestibulares antigos, gere perguntas que exercitem tanto o raciocínio lógico quanto a interpretação de texto e as capacidades específicas de cada matéria. As perguntas não devem depender de imagens para serem compreendidas, alterne entre questões consideradas fáceis, médias ou difíceis: 
             {"pergunta":"", "opcoes":["", "", "", ""], "correta":0, "explicacao":""}
             Responda apenas o JSON puro, sem markdown.
         """.trimIndent()
 
-        // Montagem do corpo da requisição com configuração de JSON
         val jsonBody = JSONObject().apply {
             put("contents", JSONArray().put(
                 JSONObject().put("parts", JSONArray().put(
@@ -114,7 +137,7 @@ class QuizActivity : AppCompatActivity() {
                         }
                     } catch (e: Exception) {
                         Log.e("QUIZ_STUBLE", "Erro no processamento: ${e.message}")
-                        buscarPerguntaIA() // Tenta gerar outra se o JSON vier quebrado
+                        buscarPerguntaIA()
                     }
                 } else {
                     runOnUiThread {
@@ -134,6 +157,7 @@ class QuizActivity : AppCompatActivity() {
             val rb = rg.getChildAt(i) as? RadioButton
             rb?.text = p.opcoes.getOrNull(i) ?: ""
             rb?.visibility = View.VISIBLE
+            rb?.isEnabled = true
         }
     }
 
@@ -150,16 +174,38 @@ class QuizActivity : AppCompatActivity() {
         val indice = rg.indexOfChild(rbSelecionado)
 
         if (indice == perguntaAtual?.correta) {
-            respondidas++
-            if (respondidas >= TOTAL_QUESTOES) {
-                Toast.makeText(this, "Sequência Concluída! 🎉", Toast.LENGTH_LONG).show()
-                finish() // Volta para a tela inicial do seu app
-            } else {
-                Toast.makeText(this, "Acertou! Carregando próxima...", Toast.LENGTH_SHORT).show()
-                buscarPerguntaIA()
-            }
+            proximaQuestaoOuFinalizar()
         } else {
-            Toast.makeText(this, "Errou! ${perguntaAtual?.explicacao}", Toast.LENGTH_LONG).show()
+            modoExplicacaoAtivo = true
+
+            findViewById<TextView>(R.id.txtExplanation).text = perguntaAtual?.explicacao ?: "Sem explicação disponível."
+            findViewById<MaterialCardView>(R.id.cardExplanation).visibility = View.VISIBLE
+
+            for (i in 0 until rg.childCount) {
+                rg.getChildAt(i).isEnabled = false
+            }
+
+            val btn = findViewById<MaterialButton>(R.id.btnConfirm)
+            btn.text = "CONTINUAR"
+
+            findViewById<NestedScrollView>(R.id.quizScrollView).post {
+                findViewById<NestedScrollView>(R.id.quizScrollView).fullScroll(View.FOCUS_DOWN)
+            }
+        }
+    }
+
+    private fun proximaQuestaoOuFinalizar() {
+        respondidas++
+
+        val progressoPercentual = ((respondidas.toFloat() / TOTAL_QUESTOES) * 100).toInt()
+        findViewById<ProgressBar>(R.id.quizProgressBar).progress = progressoPercentual
+
+        if (respondidas >= TOTAL_QUESTOES) {
+            Toast.makeText(this, "Sequência Concluída! 🎉", Toast.LENGTH_LONG).show()
+            finish()
+        } else {
+            findViewById<MaterialButton>(R.id.btnConfirm).text = "CONFIRMAR RESPOSTA"
+            buscarPerguntaIA()
         }
     }
 

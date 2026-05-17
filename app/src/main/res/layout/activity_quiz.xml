@@ -31,104 +31,144 @@
                 android:layout_height="8dp"
                 android:layout_below="@id/txtCount"
                 android:layout_marginTop="12dp"
-                android:progress="5"
+                android:progress="0"
                 android:progressDrawable="@drawable/custom_progress_bar" />
         </RelativeLayout>
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="2dp"
-            app:strokeWidth="0dp">
-
-            <TextView
-                android:id="@+id/txtQuestion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="24dp"
-                android:lineSpacingExtra="4dp"
-                android:text="O enunciado da questão gerado pela Inteligência Artificial aparecerá aqui, com uma fonte confortável para leitura?"
-                android:textColor="#2D3243"
-                android:textSize="18sp" />
-        </com.google.android.material.card.MaterialCardView>
-
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/quizScrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp"
+            android:fillViewport="true">
 
-            <RadioGroup
-                android:id="@+id/rgOptions"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <RadioButton
-                    android:id="@+id/opt1"
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_opcao_quiz"
-                    android:button="@null"
-                    android:padding="18dp"
-                    android:text="Alternativa A"
-                    android:textColor="#2D3243"
-                    android:textSize="16sp" />
+                    android:layout_marginBottom="24dp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp">
 
-                <RadioButton
-                    android:id="@+id/opt2"
+                    <TextView
+                        android:id="@+id/txtQuestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="24dp"
+                        android:lineSpacingExtra="4dp"
+                        android:text="Carregando enunciado..."
+                        android:textColor="#2D3243"
+                        android:textSize="18sp" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <RadioGroup
+                    android:id="@+id/rgOptions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_opcao_quiz"
-                    android:button="@null"
-                    android:padding="18dp"
-                    android:text="Alternativa B"
-                    android:textColor="#2D3243" />
+                    android:layout_marginBottom="16dp">
 
-                <RadioButton
-                    android:id="@+id/opt3"
+                    <RadioButton
+                        android:id="@+id/opt1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_opcao_quiz"
+                        android:button="@null"
+                        android:padding="18dp"
+                        android:text="Alternativa A"
+                        android:textColor="#2D3243"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/opt2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_opcao_quiz"
+                        android:button="@null"
+                        android:padding="18dp"
+                        android:text="Alternativa B"
+                        android:textColor="#2D3243"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/opt3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_opcao_quiz"
+                        android:button="@null"
+                        android:padding="18dp"
+                        android:text="Alternativa C"
+                        android:textColor="#2D3243"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/opt4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_opcao_quiz"
+                        android:button="@null"
+                        android:padding="18dp"
+                        android:text="Alternativa D"
+                        android:textColor="#2D3243"
+                        android:textSize="16sp" />
+                </RadioGroup>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardExplanation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_opcao_quiz"
-                    android:button="@null"
-                    android:padding="18dp"
-                    android:text="Alternativa C"
-                    android:textColor="#2D3243" />
+                    android:layout_marginBottom="24dp"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="#FFF0F0"
+                    app:cardCornerRadius="18dp"
+                    app:strokeColor="#FFCDCD"
+                    app:strokeWidth="1dp"
+                    app:cardElevation="0dp">
 
-                <RadioButton
-                    android:id="@+id/opt4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_opcao_quiz"
-                    android:button="@null"
-                    android:padding="18dp"
-                    android:text="Alternativa D"
-                    android:textColor="#2D3243" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="20dp">
 
-                <RadioButton
-                    android:id="@+id/opt5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_opcao_quiz"
-                    android:button="@null"
-                    android:padding="18dp"
-                    android:text="Alternativa E"
-                    android:textColor="#2D3243" />
-            </RadioGroup>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Resposta Incorreta ❌"
+                            android:textColor="#C62828"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtExplanation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:lineSpacingExtra="3dp"
+                            android:text="Aqui vai a explicação detalhada do Gemini..."
+                            android:textColor="#5D4037"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnConfirm"
             android:layout_width="match_parent"
             android:layout_height="65dp"
-            android:layout_marginTop="16dp"
             android:text="CONFIRMAR RESPOSTA"
             android:textSize="16sp"
             android:textStyle="bold"

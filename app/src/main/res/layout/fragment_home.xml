@@ -1,9 +1,9 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://tools.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFBFF"
+    android:background="#FAFAFE"
     tools:context=".HomeFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -17,76 +17,99 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="30dp"
-            android:paddingEnd="30dp"
-            android:paddingTop="60dp"  android:paddingBottom="20dp">
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="54dp"
+            android:paddingBottom="24dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Olá, Estudante! 👋"
-                android:textColor="#2D3243"
-                android:textSize="28sp"
-                android:textStyle="bold" />
+                android:text="Olá, Estudante! 🚀"
+                android:textColor="#1E1C38"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:letterSpacing="-0.02" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:alpha="0.7"
-                android:text="O que vamos aprender hoje?"
-                android:textColor="#2D3243"
-                android:textSize="16sp" />
+                android:layout_marginTop="4dp"
+                android:text="Seu passaporte para a vaga dos sonhos."
+                android:textColor="#787693"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="normal" />
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="24dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="4dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="8dp"
+                android:stateListAnimator="@animator/card_elevation_anim"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="24dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sua Meta Diária"
-                        android:textColor="#2D3243"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Foco do Dia"
+                            android:textColor="#1E1C38"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:background="#EFEFFF"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"
+                            android:text="35%"
+                            android:textColor="#6C63FF"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
 
                     <ProgressBar
+                        android:id="@+id/homeProgressBar"
                         style="@android:style/Widget.Material.ProgressBar.Horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="20dp"
                         android:progress="35"
                         android:progressDrawable="@drawable/custom_progress_bar" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:alpha="0.6"
-                        android:text="7 de 20 questões resolvidas"
-                        android:textColor="#2D3243"
+                        android:layout_marginTop="12dp"
+                        android:text="Faltam 13 questões para a meta de hoje!"
+                        android:textColor="#787693"
                         android:textSize="13sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -94,31 +117,27 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnStartQuestions"
                 android:layout_width="match_parent"
-                android:layout_height="85dp"
-                android:layout_marginTop="35dp"
-                android:gravity="center"
-                android:padding="0dp"
-                android:scaleY="1"
-                android:text="INICIAR"
+                android:layout_height="68dp"
+                android:layout_marginTop="32dp"
+                android:text="INICIAR MISSÃO"
                 android:textAllCaps="true"
                 android:textColor="#FFFFFF"
-                android:textSize="22sp"
-
+                android:textSize="18sp"
                 android:textStyle="bold"
+                android:letterSpacing="0.05"
                 app:backgroundTint="#6C63FF"
-                app:cornerRadius="24dp"
-                app:elevation="12dp"
-                app:iconGravity="textStart"
-                app:iconPadding="12dp" />
+                app:cornerRadius="20dp"
+                app:elevation="6dp"
+                android:stateListAnimator="@animator/button_press_anim" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
-                android:layout_marginBottom="15dp"
-                android:text="Explorar Recursos"
-                android:textColor="#2D3243"
-                android:textSize="18sp"
+                android:layout_marginTop="36dp"
+                android:layout_marginBottom="18dp"
+                android:text="Sua Jornada"
+                android:textColor="#1E1C38"
+                android:textSize="19sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -129,99 +148,148 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    app:cardBackgroundColor="#FFF4E5"
-                    app:cardCornerRadius="16dp"
-                    app:strokeWidth="0dp">
+                    android:layout_marginBottom="14dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFF5EE"
+                    app:cardCornerRadius="20dp"
+                    app:strokeColor="#FFE4D3"
+                    app:strokeWidth="1dp"
+                    app:cardElevation="2dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:padding="18dp">
+                        android:padding="20dp">
 
                         <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
                             android:src="@drawable/ic_fire"
-                            app:tint="#FF9800" />
+                            app:tint="#FF6B00" />
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="Dias de Ofensiva: 5"
-                            android:textColor="#855B27"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:layout_marginStart="18dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Fogo nos Estudos!"
+                                android:textColor="#A04000"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Você está em uma ofensiva de 5 dias"
+                                android:textColor="#B35F1E"
+                                android:textSize="13sp" />
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    app:cardBackgroundColor="#E3F2FD"
-                    app:cardCornerRadius="16dp"
-                    app:strokeWidth="0dp">
+                    android:layout_marginBottom="14dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="20dp"
+                    app:strokeColor="#EBE9F5"
+                    app:strokeWidth="1dp"
+                    app:cardElevation="3dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:padding="18dp">
+                        android:padding="20dp">
 
                         <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
                             android:src="@drawable/ic_auto_fix"
-                            app:tint="#2196F3" />
+                            app:tint="#6C63FF" />
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="Tirar Dúvidas com IA"
-                            android:textColor="#1976D2"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:layout_marginStart="18dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Mentor IA Stuble"
+                                android:textColor="#1E1C38"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tire dúvidas sobre qualquer matéria"
+                                android:textColor="#787693"
+                                android:textSize="13sp" />
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    app:cardBackgroundColor="#F3E5F5"
-                    app:cardCornerRadius="16dp"
-                    app:strokeWidth="0dp">
+                    android:layout_marginBottom="14dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="20dp"
+                    app:strokeColor="#EBE9F5"
+                    app:strokeWidth="1dp"
+                    app:cardElevation="3dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:padding="18dp">
+                        android:padding="20dp">
 
                         <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
                             android:src="@drawable/ic_forum"
-                            app:tint="#9C27B0" />
+                            app:tint="#6C63FF" />
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="Fórum da Comunidade"
-                            android:textColor="#7B1FA2"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:layout_marginStart="18dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Arena da Comunidade"
+                                android:textColor="#1E1C38"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Interaja e tire dúvidas com o seu grupo"
+                                android:textColor="#787693"
+                                android:textSize="13sp" />
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

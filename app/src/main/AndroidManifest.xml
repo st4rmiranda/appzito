@@ -36,6 +36,12 @@
         <activity
             android:name=".QuizActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ExplanationActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

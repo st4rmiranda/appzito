@@ -10,6 +10,13 @@ plugins {
 android {
     namespace = "com.company.stuble"
     compileSdk = 34
+    buildFeatures { buildConfig = true }
+    defaultConfig {
+        buildConfigField(
+            "String",
+            "GEMINI_API_KEY",
+            "\"${project.findProperty("GEMINI_API_KEY")}\""
+        )}
 
 
 
