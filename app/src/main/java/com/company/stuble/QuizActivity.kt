@@ -1,5 +1,6 @@
 package com.company.stuble
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -65,6 +66,17 @@ class QuizActivity : AppCompatActivity() {
                 verificarResposta()
             }
         }
+
+        findViewById<MaterialButton>(R.id.btnVoltar).setOnClickListener {
+
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags =
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
+
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun buscarPerguntaIA() {
@@ -75,7 +87,7 @@ class QuizActivity : AppCompatActivity() {
             val progressoPercentual = ((respondidas.toFloat() / TOTAL_QUESTOES) * 100).toInt()
             findViewById<ProgressBar>(R.id.quizProgressBar).progress = progressoPercentual
 
-            findViewById<TextView>(R.id.txtQuestion).text = "Gerando pergunta pelo Mentor IA..."
+            findViewById<TextView>(R.id.txtQuestion).text = "Gerando pergunta... Aguarde ;)"
             bloquearBotaoConfirmar(true)
         }
 
@@ -90,7 +102,7 @@ class QuizActivity : AppCompatActivity() {
 
         val promptText = """
             Gere uma pergunta de vestibular em JSON. $promptFiltro
-            Para desenvolver as questões, se baseie nos conteúdos de vestibulares antigos, gere perguntas que exercitem tanto o raciocínio lógico quanto a interpretação de texto e as capacidades específicas de cada matéria. As perguntas não devem depender de imagens para serem compreendidas, alterne entre questões consideradas fáceis, médias ou difíceis: 
+            Para desenvolver as questões, se baseie nos conteúdos de vestibulares antigos, não só apenas de perguntas de portugues, faça de todas as materias que estão no ENEM, gere perguntas que exercitem tanto o raciocínio lógico quanto a interpretação de texto e as capacidades específicas de cada matéria. As perguntas não devem depender de imagens para serem compreendidas, alterne entre questões consideradas fáceis, médias ou difíceis: 
             {"pergunta":"", "opcoes":["", "", "", ""], "correta":0, "explicacao":""}
             Responda apenas o JSON puro, sem markdown.
         """.trimIndent()
@@ -195,16 +207,32 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun proximaQuestaoOuFinalizar() {
+
+        ProgressManager.adicionarQuestaoRespondida(this)
+
         respondidas++
 
-        val progressoPercentual = ((respondidas.toFloat() / TOTAL_QUESTOES) * 100).toInt()
-        findViewById<ProgressBar>(R.id.quizProgressBar).progress = progressoPercentual
+        val progressoPercentual =
+            ((respondidas.toFloat() / TOTAL_QUESTOES) * 100).toInt()
+
+        findViewById<ProgressBar>(R.id.quizProgressBar)
+            .progress = progressoPercentual
 
         if (respondidas >= TOTAL_QUESTOES) {
-            Toast.makeText(this, "Sequência Concluída! 🎉", Toast.LENGTH_LONG).show()
+
+            Toast.makeText(
+                this,
+                "Sequência concluída! 🎉",
+                Toast.LENGTH_LONG
+            ).show()
+
             finish()
+
         } else {
-            findViewById<MaterialButton>(R.id.btnConfirm).text = "CONFIRMAR RESPOSTA"
+
+            findViewById<MaterialButton>(R.id.btnConfirm)
+                .text = "CONFIRMAR RESPOSTA"
+
             buscarPerguntaIA()
         }
     }

@@ -1,67 +1,105 @@
 package com.company.stuble
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ProgressBar // IMPORT ADICIONADO AQUI
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 
 class HomeFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    ): View {
+        return inflater.inflate(
+            R.layout.fragment_home,
+            container,
+            false
+        )
     }
 
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
+        val txtNome = view.findViewById<TextView>(R.id.txtNomeUsuario)
 
+        val user = FirebaseAuth.getInstance().currentUser
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val nomeUsuario = user?.displayName ?: "Estudante"
+
+        txtNome.text = "Olá, $nomeUsuario 🚀"
+
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Configuração do clique do botão para abrir o Quiz
-        val btnIniciar = view.findViewById<Button>(R.id.btnStartQuestions)
+        val btnIniciar =
+            view.findViewById<Button>(R.id.btnStartQuestions)
+
         btnIniciar.setOnClickListener {
-            val intent = Intent(context, QuizActivity::class.java)
+
+            val intent =
+                Intent(requireContext(), QuizActivity::class.java)
+
             startActivity(intent)
         }
-
-        // 2. O LUGAR CORRETO DA ANIMAÇÃO É AQUI!
-        // Como a view já foi criada, conseguimos achar a ProgressBar com segurança
-        val progressBar = view.findViewById<ProgressBar>(R.id.homeProgressBar)
-
-        // Executa a animação babadeira assim que o estudante entra na tela
-        android.animation.ObjectAnimator.ofInt(progressBar, "progress", 0, 35)
-            .setDuration(1000) // 1 segundo de animação correndo
-            .start()
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onResume() {
+        super.onResume()
+        atualizarProgresso()
+    }
+
+    private fun atualizarProgresso() {
+
+        val respondidas =
+            ProgressManager.getQuestoesRespondidas(
+                requireContext()
+            )
+
+        val percentual =
+            ProgressManager.getPercentual(
+                requireContext()
+            )
+
+        val faltam =
+            maxOf(0, 20 - respondidas)
+
+        val progressBar =
+            requireView().findViewById<ProgressBar>(
+                R.id.homeProgressBar
+            )
+
+        val txtPercentual =
+            requireView().findViewById<TextView>(
+                R.id.txtPercentual
+            )
+
+        val txtMeta =
+            requireView().findViewById<TextView>(
+                R.id.txtMetaDiaria
+            )
+
+        ObjectAnimator.ofInt(
+            progressBar,
+            "progress",
+            progressBar.progress,
+            percentual
+        ).apply {
+            duration = 700
+            start()
+        }
+
+        txtPercentual.text = "$percentual%"
+
+        txtMeta.text =
+            "Faltam $faltam questões para a meta de hoje!"
     }
 }

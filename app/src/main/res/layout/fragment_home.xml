@@ -1,53 +1,15 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://tools.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFAFE"
-    tools:context=".HomeFragment">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:elevation="0dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
-            android:paddingTop="54dp"
-            android:paddingBottom="24dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Olá, Estudante! 🚀"
-                android:textColor="#1E1C38"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                android:letterSpacing="-0.02" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Seu passaporte para a vaga dos sonhos."
-                android:textColor="#787693"
-                android:textSize="15sp"
-                android:fontFamily="sans-serif-medium"
-                android:textStyle="normal" />
-        </LinearLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+    android:background="#F7F8FC">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,14 +17,34 @@
             android:orientation="vertical"
             android:padding="24dp">
 
+            <!-- HEADER -->
+
+            <TextView
+                android:id="@+id/txtNomeUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Olá, Estudante 🚀"
+                android:textColor="#1E1C38"
+                android:textSize="30sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Seu passaporte para a vaga dos sonhos."
+                android:textColor="#7A7995"
+                android:textSize="15sp"/>
+
+            <!-- MISSÃO DIÁRIA -->
+
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="#FFFFFF"
+                android:layout_marginTop="28dp"
                 app:cardCornerRadius="28dp"
-                app:cardElevation="8dp"
-                android:stateListAnimator="@animator/card_elevation_anim"
-                app:strokeWidth="0dp">
+                app:cardBackgroundColor="#6C63FF"
+                app:cardElevation="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -70,226 +52,196 @@
                     android:orientation="vertical"
                     android:padding="24dp">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🔥 MISSÃO DIÁRIA"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Foco do Dia"
-                            android:textColor="#1E1C38"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:background="#EFEFFF"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="4dp"
-                            android:text="35%"
-                            android:textColor="#6C63FF"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-                    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/txtMetaDiaria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="0 de 20 questões concluídas"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"/>
 
                     <ProgressBar
                         android:id="@+id/homeProgressBar"
                         style="@android:style/Widget.Material.ProgressBar.Horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="10dp"
-                        android:layout_marginTop="20dp"
-                        android:progress="35"
-                        android:progressDrawable="@drawable/custom_progress_bar" />
+                        android:layout_height="12dp"
+                        android:layout_marginTop="18dp"
+                        android:max="100"
+                        android:progress="0"
+                        android:progressDrawable="@drawable/custom_progress_bar"/>
 
                     <TextView
+                        android:id="@+id/txtPercentual"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:text="Faltam 13 questões para a meta de hoje!"
-                        android:textColor="#787693"
-                        android:textSize="13sp" />
+                        android:text="0%"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold"/>
                 </LinearLayout>
+
             </com.google.android.material.card.MaterialCardView>
+
+            <!-- BOTÃO -->
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnStartQuestions"
                 android:layout_width="match_parent"
                 android:layout_height="68dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:text="INICIAR MISSÃO"
-                android:textAllCaps="true"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:letterSpacing="0.05"
                 app:backgroundTint="#6C63FF"
-                app:cornerRadius="20dp"
-                app:elevation="6dp"
-                android:stateListAnimator="@animator/button_press_anim" />
+                app:cornerRadius="20dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
-                android:layout_marginBottom="18dp"
-                android:text="Sua Jornada"
-                android:textColor="#1E1C38"
-                android:textSize="19sp"
-                android:textStyle="bold" />
+            <!-- OFENSIVA -->
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginTop="28dp"
+                app:cardCornerRadius="24dp"
+                app:cardBackgroundColor="#FFF5EE">
 
-                <com.google.android.material.card.MaterialCardView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="#FFF5EE"
-                    app:cardCornerRadius="20dp"
-                    app:strokeColor="#FFE4D3"
-                    app:strokeWidth="1dp"
-                    app:cardElevation="2dp">
+                    android:orientation="vertical"
+                    android:padding="24dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="20dp">
+                        android:text="🔥 FOGO NOS ESTUDOS"
+                        android:textColor="#D35400"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
 
-                        <ImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:src="@drawable/ic_fire"
-                            app:tint="#FF6B00" />
+                    <TextView
+                        android:id="@+id/txtStreak"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="0 dias seguidos"
+                        android:textColor="#A04000"
+                        android:textSize="22sp"
+                        android:textStyle="bold"/>
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="18dp"
-                            android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/txtMaiorStreak"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="Maior sequência: 0 dias"
+                        android:textColor="#B35F1E"
+                        android:textSize="14sp"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Fogo nos Estudos!"
-                                android:textColor="#A04000"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Você está em uma ofensiva de 5 dias"
-                                android:textColor="#B35F1E"
-                                android:textSize="13sp" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.card.MaterialCardView
+            <!-- ESTATÍSTICAS -->
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:cardCornerRadius="24dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="20dp"
-                    app:strokeColor="#EBE9F5"
-                    app:strokeWidth="1dp"
-                    app:cardElevation="3dp">
+                    android:orientation="vertical"
+                    android:padding="24dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="20dp">
+                        android:text="📊 ESTATÍSTICAS"
+                        android:textColor="#1E1C38"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
 
-                        <ImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:src="@drawable/ic_auto_fix"
-                            app:tint="#6C63FF" />
+                    <TextView
+                        android:id="@+id/txtTotalQuestoes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Questões respondidas: 0"
+                        android:textColor="#444444"
+                        android:textSize="15sp"/>
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="18dp"
-                            android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/txtAcertos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Taxa de acerto: 0%"
+                        android:textColor="#444444"
+                        android:textSize="15sp"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Mentor IA Stuble"
-                                android:textColor="#1E1C38"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Tire dúvidas sobre qualquer matéria"
-                                android:textColor="#787693"
-                                android:textSize="13sp" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.card.MaterialCardView
+            <!-- CONQUISTAS -->
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp"
+                app:cardCornerRadius="24dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="20dp"
-                    app:strokeColor="#EBE9F5"
-                    app:strokeWidth="1dp"
-                    app:cardElevation="3dp">
+                    android:orientation="vertical"
+                    android:padding="24dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="20dp">
+                        android:text="🏆 CONQUISTAS"
+                        android:textColor="#1E1C38"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
 
-                        <ImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:src="@drawable/ic_forum"
-                            app:tint="#6C63FF" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="✅ Primeira Questão"/>
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="18dp"
-                            android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🔒 100 Questões Respondidas"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Arena da Comunidade"
-                                android:textColor="#1E1C38"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🔒 7 Dias de Ofensiva"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Interaja e tire dúvidas com o seu grupo"
-                                android:textColor="#787693"
-                                android:textSize="13sp" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
-            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
