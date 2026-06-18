@@ -1,19 +1,24 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFBFF">
+    android:background="#F7F8FC"
+    tools:context=".ProfileFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <!-- HEADER EM HARMONIA COM O ROXO VIBRANTE DA HOME -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="260dp"
-            android:background="#F3E5F5"
-            android:paddingBottom="30dp">
+            android:layout_height="280dp"
+            android:background="#6C63FF"
+            android:paddingBottom="40dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -25,43 +30,45 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp">
+                    android:layout_marginBottom="16dp">
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/cardProfileImage"
-                        android:layout_width="110dp"
-                        android:layout_height="110dp"
-                        app:cardCornerRadius="55dp"
-                        app:cardElevation="3dp"
-                        app:strokeColor="#FFFFFF"
-                        app:strokeWidth="3dp">
+                        android:layout_width="114dp"
+                        android:layout_height="114dp"
+                        app:cardCornerRadius="57dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="#6C63FF"
+                        app:strokeWidth="4dp">
 
                         <ImageView
                             android:id="@+id/imgProfile"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
+                            android:contentDescription="Foto de perfil do estudante"
                             android:src="@drawable/ic_user_placeholder" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/btnChangePhoto"
-                        android:layout_width="34dp"
-                        android:layout_height="34dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignBottom="@id/cardProfileImage"
                         android:layout_alignEnd="@id/cardProfileImage"
-                        android:layout_marginEnd="2dp"
-                        android:layout_marginBottom="2dp"
-                        app:cardBackgroundColor="#6C63FF"
-                        app:cardCornerRadius="17dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
+                        app:cardBackgroundColor="#1E1C38"
+                        app:cardCornerRadius="18dp"
                         app:cardElevation="4dp"
                         app:strokeWidth="0dp">
 
                         <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_camera"
+                            android:contentDescription="Alterar foto de perfil"
                             app:tint="#FFFFFF" />
                     </com.google.android.material.card.MaterialCardView>
                 </RelativeLayout>
@@ -71,25 +78,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nome do Estudante"
-                    android:textColor="#2D3243"
-                    android:textSize="22sp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtEmailUsuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="4dp"
                     android:text="estudante@stuble.com"
-                    android:textColor="#616161"
+                    android:textColor="#E0DEFF"
                     android:textSize="14sp" />
             </LinearLayout>
         </RelativeLayout>
 
+        <!-- CORPO DE CONFIGURAÇÕES COM CARDS ARREDONDADOS -->
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="-30dp"
+            android:layout_marginTop="-40dp"
             android:background="@drawable/fundo_perfil_arredondado"
             android:elevation="4dp"
             android:fillViewport="true">
@@ -100,12 +108,101 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
+                <!-- SEÇÃO: MÉTRICAS COMPILADAS -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    android:text="Configurações da Conta"
-                    android:textColor="#9E9E9E"
+                    android:text="Seu Progresso de Estudos"
+                    android:textColor="#6C63FF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="28dp">
+
+                    <!-- Card Esquerdo: Questões Respondidas -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        app:cardBackgroundColor="#FFFFFF"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="2dp"
+                        app:strokeWidth="0dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+                            <TextView
+                                android:id="@+id/txtStatQuestoes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#6C63FF"
+                                android:textSize="26sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="Questões Feitas"
+                                android:textColor="#7A7995"
+                                android:textSize="12sp"
+                                android:gravity="center" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Card Direito: Taxa de Acertos -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        app:cardBackgroundColor="#FFF5EE"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="2dp"
+                        app:strokeWidth="0dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+                            <TextView
+                                android:id="@+id/txtStatAcertos"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0%"
+                                android:textColor="#D35400"
+                                android:textSize="26sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="Taxa de Acerto"
+                                android:textColor="#A04000"
+                                android:textSize="12sp"
+                                android:gravity="center" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <!-- SEÇÃO: OPÇÕES DA CONTA -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:text="Configurações do App"
+                    android:textColor="#7A7995"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     android:textAllCaps="true" />
@@ -115,8 +212,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="24dp"
                     app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="1dp"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="2dp"
                     app:strokeWidth="0dp">
 
                     <LinearLayout
@@ -131,7 +228,7 @@
                             android:layout_height="60dp"
                             android:gravity="start|center_vertical"
                             android:text="Alterar Nome de Usuário"
-                            android:textColor="#2D3243"
+                            android:textColor="#1E1C38"
                             android:textSize="15sp"
                             app:icon="@drawable/ic_edit"
                             app:iconPadding="16dp"
@@ -141,7 +238,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="56dp"
-                            android:background="#F5F5F5" />
+                            android:background="#F0F1F5" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnChangePassword"
@@ -150,7 +247,7 @@
                             android:layout_height="60dp"
                             android:gravity="start|center_vertical"
                             android:text="Redefinir Senha de Acesso"
-                            android:textColor="#2D3243"
+                            android:textColor="#1E1C38"
                             android:textSize="15sp"
                             app:icon="@drawable/ic_lock"
                             app:iconPadding="16dp"
@@ -160,7 +257,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="56dp"
-                            android:background="#F5F5F5" />
+                            android:background="#F0F1F5" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnNotifications"
@@ -169,7 +266,7 @@
                             android:layout_height="60dp"
                             android:gravity="start|center_vertical"
                             android:text="Configurações de Notificação"
-                            android:textColor="#2D3243"
+                            android:textColor="#1E1C38"
                             android:textSize="15sp"
                             app:icon="@drawable/ic_notifications"
                             app:iconPadding="16dp"
@@ -177,23 +274,14 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:text="Sessão"
-                    android:textColor="#9E9E9E"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textAllCaps="true" />
-
+                <!-- BOTÃO SAIR CORRIGIDO VISUALMENTE E ESTRUTURALMENTE -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="32dp"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="1dp"
+                    app:cardBackgroundColor="#FFF0F2"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="0dp"
                     app:strokeWidth="0dp">
 
                     <com.google.android.material.button.MaterialButton
@@ -202,12 +290,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:gravity="start|center_vertical"
-                        android:text="Sair da Conta"
-                        android:textColor="#FF5252"
+                        android:text="Sair da Conta Stuble"
+                        android:textColor="#FF4A5A"
                         android:textSize="15sp"
                         app:icon="@drawable/ic_logout"
                         app:iconPadding="16dp"
-                        app:iconTint="#FF5252" />
+                        app:iconTint="#FF4A5A" />
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>

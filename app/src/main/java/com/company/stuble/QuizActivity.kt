@@ -39,10 +39,11 @@ class QuizActivity : AppCompatActivity() {
     private var filtroCompetencia: String? = null
     private var ehTreinoLivre = false
 
-    // Configuração de rede unificada
+    // Cliente HTTP atualizado com o interceptador de repetição automática
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
+        .addInterceptor(RetryInterceptor(maxRetries = 3))
         .build()
 
     private val apiKey = BuildConfig.GEMINI_API_KEY
@@ -52,7 +53,6 @@ class QuizActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
 
-        // Resgata os filtros enviados pelo SearchFragment
         filtroCompetencia = intent.getStringExtra("COMPETENCIA_FILTRO")
         ehTreinoLivre = intent.getBooleanExtra("EH_TREINO_LIVRE", false)
 
@@ -68,12 +68,8 @@ class QuizActivity : AppCompatActivity() {
         }
 
         findViewById<MaterialButton>(R.id.btnVoltar).setOnClickListener {
-
             val intent = Intent(this, MainActivity::class.java)
-            intent.flags =
-                Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                        Intent.FLAG_ACTIVITY_SINGLE_TOP
-
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
             finish()
         }
@@ -93,19 +89,26 @@ class QuizActivity : AppCompatActivity() {
 
         val url = "https://generativelanguage.googleapis.com/v1beta/models/$modeloGemini:generateContent?key=$apiKey"
 
-        // DINÂMICA DE FILTRO: Força a IA a gerar sobre o card clicado, ou mantém livre
         val promptFiltro = if (filtroCompetencia != null) {
             "Você DEVE gerar uma pergunta estritamente sobre a competência: $filtroCompetencia."
         } else {
             "As perguntas devem se basear nas seguintes competências alternadas: Linguagens, Códigos e suas Tecnologias, Ciências Humanas e suas Tecnologias, Ciências da Natureza e suas Tecnologias, Matemática e suas Tecnologias."
         }
 
+        // PROMPT OTIMIZADO: Remove o viés e força a alternância real de matérias
         val promptText = """
-            Gere uma pergunta de vestibular em JSON. $promptFiltro
-            Para desenvolver as questões, se baseie nos conteúdos de vestibulares antigos, não só apenas de perguntas de portugues, faça de todas as materias que estão no ENEM, gere perguntas que exercitem tanto o raciocínio lógico quanto a interpretação de texto e as capacidades específicas de cada matéria. As perguntas não devem depender de imagens para serem compreendidas, alterne entre questões consideradas fáceis, médias ou difíceis: 
-            {"pergunta":"", "opcoes":["", "", "", ""], "correta":0, "explicacao":""}
-            Responda apenas o JSON puro, sem markdown.
-        """.trimIndent()
+    Você é um gerador especialista em vestibulares brasileiros. 
+    ${if (filtroCompetencia != null) "Sua meta absoluta é gerar uma questão sobre: $filtroCompetencia." else "Você DEVE escolher aleatoriamente uma matéria entre as 4 áreas do ENEM: Matemática e suas Tecnologias, Ciências da Natureza (Física, Química, Biologia), Ciências Humanas (História, Geografia, Filosofia/Sociologia) ou Linguagens."}
+    
+    Regras da estrutura da questão:
+    1. Baseie-se no nível e estilo de cobrança de exames reais (ENEM, FUVEST, UNESP).
+    2. Crie um enunciado que exercite o raciocínio lógico, a interpretação ou a aplicação de fórmulas específicas da matéria escolhida.
+    3. A pergunta não pode depender de imagens ou gráficos para ser respondida.
+    4. Alterne o nível de dificuldade (fácil, média ou difícil).
+    
+    Retorne ESTRITAMENTE o JSON puro no seguinte formato, sem formatação markdown (sem ```json):
+    {"pergunta":"[Escreva o enunciado aqui]", "opcoes":["Opção A", "Opção B", "Opção C", "Opção D"], "correta":0, "explicacao":"[Explique o porquê da alternativa correta de forma didática]"}
+""".trimIndent()
 
         val jsonBody = JSONObject().apply {
             put("contents", JSONArray().put(
@@ -207,32 +210,17 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun proximaQuestaoOuFinalizar() {
-
         ProgressManager.adicionarQuestaoRespondida(this)
-
         respondidas++
 
-        val progressoPercentual =
-            ((respondidas.toFloat() / TOTAL_QUESTOES) * 100).toInt()
-
-        findViewById<ProgressBar>(R.id.quizProgressBar)
-            .progress = progressoPercentual
+        val progressoPercentual = ((respondidas.toFloat() / TOTAL_QUESTOES) * 100).toInt()
+        findViewById<ProgressBar>(R.id.quizProgressBar).progress = progressoPercentual
 
         if (respondidas >= TOTAL_QUESTOES) {
-
-            Toast.makeText(
-                this,
-                "Sequência concluída! 🎉",
-                Toast.LENGTH_LONG
-            ).show()
-
+            Toast.makeText(this, "Sequência concluída! 🎉", Toast.LENGTH_LONG).show()
             finish()
-
         } else {
-
-            findViewById<MaterialButton>(R.id.btnConfirm)
-                .text = "CONFIRMAR RESPOSTA"
-
+            findViewById<MaterialButton>(R.id.btnConfirm).text = "CONFIRMAR RESPOSTA"
             buscarPerguntaIA()
         }
     }
