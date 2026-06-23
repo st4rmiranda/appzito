@@ -3,9 +3,10 @@ package com.company.stuble
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.webkit.WebView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -14,6 +15,11 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+
+data class TopicoMapa(
+    val titulo: String,
+    val itens: List<String>
+)
 
 class ExplanationActivity : AppCompatActivity() {
 
@@ -29,157 +35,202 @@ class ExplanationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_explanation)
 
-        val materiaPesquisada = intent.getStringExtra("MATERIA_PESQUISADA") ?: "Assunto Geral"
-        val tipoConteudo = intent.getStringExtra("TIPO_CONTEUDO") ?: "TEXTO"
+        val materiaPesquisada =
+            intent.getStringExtra("MATERIA_PESQUISADA") ?: "Assunto Geral"
 
-        findViewById<TextView>(R.id.txtTitleMateria).text = materiaPesquisada.replaceFirstChar { it.uppercase() }
+        val tipoConteudo =
+            intent.getStringExtra("TIPO_CONTEUDO") ?: "TEXTO"
 
-        buscarExploracaoTeoricaIA(materiaPesquisada, tipoConteudo)
+        findViewById<TextView>(R.id.txtTitleMateria).text =
+            materiaPesquisada.replaceFirstChar { it.uppercase() }
 
         findViewById<MaterialButton>(R.id.btnBackExplanation).setOnClickListener {
             finish()
         }
+
+        buscarConteudoIA(materiaPesquisada, tipoConteudo)
     }
 
-    private fun buscarExploracaoTeoricaIA(materia: String, tipoConteudo: String) {
-        val url = "https://generativelanguage.googleapis.com/v1beta/models/$modeloGemini:generateContent?key=$apiKey"
+    private fun buscarConteudoIA(materia: String, tipoConteudo: String) {
+        val url =
+            "https://generativelanguage.googleapis.com/v1beta/models/$modeloGemini:generateContent?key=$apiKey"
 
         val promptText = if (tipoConteudo == "MAPA_MENTAL") {
             """
-                Você é o Mentor IA Stuble. Crie um mapa mental estruturado sobre o assunto solicitado pelo estudante: $materia.
-                O foco deve ser a revisão rápida e memorização para vestibulares brasileiros (ENEM, FUVEST, UNESP).
-                
-                Retorne ESTRITAMENTE o código plano de um mapa mental usando a sintaxe 'mermaid' (iniciando obrigatoriamente com a palavra-chave 'mindmap').
-                NÃO use blocos de marcação markdown (NÃO coloque aspas triplas ou ```mermaid no início ou no fim). Retorne apenas o texto puro da sintaxe.
-                
-                Exemplo de formato esperado:
-                mindmap
-                  root((Assunto Principal))
-                    Tema Secundario 1
-                      Detalhe Importante
-                    Tema Secundario 2
-                      Formula Importante
+            Crie um mapa mental educacional sobre: $materia
+
+            Retorne APENAS JSON válido, sem markdown e sem texto adicional.
+
+            Use exatamente este formato:
+
+            {
+              "titulo": "$materia",
+              "topicos": [
+                {
+                  "titulo": "Conceito",
+                  "itens": ["item 1", "item 2"]
+                },
+                {
+                  "titulo": "Formula",
+                  "itens": ["item 1", "item 2"]
+                }
+              ]
+            }
+
+            Regras:
+            - Use linguagem simples para estudantes de ensino médio.
+            - Foque em ENEM, FUVEST e UNESP.
+            - Crie entre 4 e 6 tópicos.
+            - Cada tópico deve ter entre 2 e 4 itens.
+            - Não use markdown.
+            - Não use ```json.
+            - Não escreva nada fora do JSON.
             """.trimIndent()
         } else {
             """
-                Você é o Mentor IA Stuble. Explique de forma extremamente didática, focada para vestibulares brasileiros (ENEM, FUVEST, UNESP), o seguinte assunto pedido pelo estudante: $materia.
-                
-                Siga estas regras de formatação:
-                1. Use tópicos claros e diretos.
-                2. Destaque fórmulas importantes ou conceitos vitais usando letras maiúsculas ou aspas simples (NÃO use Markdown como asteriscos ou hashtags).
-                3. Dê exemplos práticos de como isso costuma cair na prova.
-                4. Divida o texto em parágrafos bem espaçados.
+            Você é o Mentor IA Stuble. Explique de forma didática, focada em vestibulares brasileiros
+            como ENEM, FUVEST e UNESP, o seguinte assunto: $materia.
+
+            Regras:
+            1. Use tópicos claros.
+            2. Explique os conceitos principais.
+            3. Dê exemplos de aplicação.
+            4. Mostre como o tema costuma cair em provas.
+            5. Não use markdown com asteriscos ou hashtags.
             """.trimIndent()
         }
 
         val jsonBody = JSONObject().apply {
-            put("contents", JSONArray().put(
-                JSONObject().put("parts", JSONArray().put(
-                    JSONObject().put("text", promptText)
-                ))
-            ))
-            put("generationConfig", JSONObject().apply {
-                put("responseMimeType", "text/plain")
-            })
+            put(
+                "contents",
+                JSONArray().put(
+                    JSONObject().put(
+                        "parts",
+                        JSONArray().put(
+                            JSONObject().put("text", promptText)
+                        )
+                    )
+                )
+            )
         }
 
-        val body = jsonBody.toString().toRequestBody("application/json".toMediaType())
-        val request = Request.Builder().url(url).post(body).build()
+        val body = jsonBody.toString()
+            .toRequestBody("application/json".toMediaType())
 
-        findViewById<TextView>(R.id.txtExplanationContent).text = "O Mentor IA está estruturando seu conteúdo... Aguarde ;)"
+        val request = Request.Builder()
+            .url(url)
+            .post(body)
+            .build()
+
+        findViewById<TextView>(R.id.txtExplanationContent).visibility = View.VISIBLE
+        findViewById<RecyclerView>(R.id.recyclerMapaMental).visibility = View.GONE
+
+        findViewById<TextView>(R.id.txtExplanationContent).text =
+            "O Mentor IA está estruturando seu conteúdo... Aguarde ;)"
 
         client.newCall(request).enqueue(object : Callback {
+
             override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread {
                     findViewById<TextView>(R.id.txtExplanationContent).text =
-                        "Infelizmente não consegui me conectar ao servidor. Verifique sua conexão de rede."
+                        "Não foi possível conectar ao servidor. Verifique sua internet."
                 }
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val corpo = response.body?.string() ?: ""
-                if (response.isSuccessful) {
-                    try {
-                        val json = JSONObject(corpo)
-                        val textoIA = json.getJSONArray("candidates")
-                            .getJSONObject(0).getJSONObject("content")
-                            .getJSONArray("parts").getJSONObject(0).getString("text")
 
-                        runOnUiThread {
-                            if (tipoConteudo == "MAPA_MENTAL") {
-                                renderizarMapaMental(textoIA.trim())
-                            } else {
-                                findViewById<TextView>(R.id.txtExplanationContent).text = textoIA.trim()
-                            }
-                        }
-                    } catch (e: Exception) {
-                        Log.e("EXPLANATION_STUBLE", "Erro no parse: ${e.message}")
-                        runOnUiThread {
-                            findViewById<TextView>(R.id.txtExplanationContent).text =
-                                "Ocorreu um erro ao processar a explicação. Tente pesquisar novamente."
-                        }
-                    }
-                } else {
+                if (!response.isSuccessful) {
+                    Log.e("GEMINI_ERROR", "Código: ${response.code}\nResposta: $corpo")
+
                     runOnUiThread {
                         findViewById<TextView>(R.id.txtExplanationContent).text =
-                            "O Mentor IA está ocupado no momento. Tente novamente em instantes."
+                            "Erro ${response.code}. Tente novamente em instantes."
+                    }
+                    return
+                }
+
+                try {
+                    val json = JSONObject(corpo)
+
+                    val textoIA = json.getJSONArray("candidates")
+                        .getJSONObject(0)
+                        .getJSONObject("content")
+                        .getJSONArray("parts")
+                        .getJSONObject(0)
+                        .getString("text")
+                        .trim()
+
+                    Log.d("MAPA_JSON_DEBUG", textoIA)
+
+                    runOnUiThread {
+                        if (tipoConteudo == "MAPA_MENTAL") {
+                            exibirMapaMental(textoIA)
+                        } else {
+                            findViewById<TextView>(R.id.txtExplanationContent).text =
+                                textoIA
+                        }
+                    }
+
+                } catch (e: Exception) {
+                    Log.e("EXPLANATION_ERROR", e.message ?: "Erro desconhecido")
+
+                    runOnUiThread {
+                        findViewById<TextView>(R.id.txtExplanationContent).text =
+                            "Ocorreu um erro ao processar a resposta da IA."
                     }
                 }
             }
         })
     }
 
-    private fun renderizarMapaMental(codigoMermaid: String) {
-        val txtContent = findViewById<TextView>(R.id.txtExplanationContent)
-        val webView = findViewById<WebView>(R.id.webViewMapaMental)
+    private fun exibirMapaMental(jsonTexto: String) {
+        try {
+            val jsonLimpo = jsonTexto
+                .replace("```json", "")
+                .replace("```", "")
+                .trim()
 
-        txtContent.visibility = View.GONE
-        webView.visibility = View.VISIBLE
+            val objeto = JSONObject(jsonLimpo)
+            val topicosArray = objeto.getJSONArray("topicos")
 
-        webView.settings.javaScriptEnabled = true
-        webView.settings.builtInZoomControls = true
-        webView.settings.displayZoomControls = false
+            val listaTopicos = mutableListOf<TopicoMapa>()
 
-        val htmlData = """
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <script src="[https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js](https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js)"></script>
-                <script>
-                    mermaid.initialize({
-                        startOnLoad: true,
-                        theme: 'base',
-                        themeVariables: {
-                            primaryColor: '#6C63FF',
-                            primaryTextColor: '#FFFFFF',
-                            lineColor: '#1E1C38',
-                            fontSize: '14px',
-                            nodeBorder: '#6C63FF'
-                        }
-                    });
-                </script>
-                <style>
-                    body {
-                        background-color: #F7F8FC;
-                        margin: 0;
-                        padding: 16px;
-                        display: flex;
-                        justify-content: center;
-                    }
-                    .mermaid {
-                        width: 100%;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="mermaid">
-                    $codigoMermaid
-                </div>
-            </body>
-            </html>
-        """.trimIndent()
+            for (i in 0 until topicosArray.length()) {
+                val topicoJson = topicosArray.getJSONObject(i)
 
-        webView.loadDataWithBaseURL(null, htmlData, "text/html", "UTF-8", null)
+                val titulo = topicoJson.getString("titulo")
+                val itensArray = topicoJson.getJSONArray("itens")
+
+                val itens = mutableListOf<String>()
+
+                for (j in 0 until itensArray.length()) {
+                    itens.add(itensArray.getString(j))
+                }
+
+                listaTopicos.add(
+                    TopicoMapa(
+                        titulo = titulo,
+                        itens = itens
+                    )
+                )
+            }
+
+            findViewById<TextView>(R.id.txtExplanationContent).visibility = View.GONE
+
+            val recycler = findViewById<RecyclerView>(R.id.recyclerMapaMental)
+            recycler.visibility = View.VISIBLE
+            recycler.layoutManager = LinearLayoutManager(this)
+            recycler.adapter = MapaMentalAdapter(listaTopicos)
+
+        } catch (e: Exception) {
+            Log.e("MAPA_MENTAL_ERROR", e.message ?: "Erro ao montar mapa mental")
+
+            findViewById<TextView>(R.id.txtExplanationContent).visibility = View.VISIBLE
+            findViewById<RecyclerView>(R.id.recyclerMapaMental).visibility = View.GONE
+
+            findViewById<TextView>(R.id.txtExplanationContent).text =
+                "A IA não conseguiu gerar um mapa mental válido. Tente pesquisar novamente."
+        }
     }
 }

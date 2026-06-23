@@ -2,7 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://tools.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F7F8FC"
@@ -13,11 +13,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- HEADER EM HARMONIA COM O ROXO VIBRANTE DA HOME -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="280dp"
-            android:background="#6C63FF"
+            android:background="#4F46E5"
             android:paddingBottom="40dp">
 
             <LinearLayout
@@ -38,27 +37,29 @@
                         android:layout_height="114dp"
                         app:cardCornerRadius="57dp"
                         app:cardElevation="0dp"
-                        app:strokeColor="#6C63FF"
+                        app:strokeColor="#FFFFFF"
                         app:strokeWidth="4dp">
 
                         <ImageView
                             android:id="@+id/imgProfile"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
                             android:contentDescription="Foto de perfil do estudante"
-                            android:src="@drawable/ic_user_placeholder" />
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_person"
+                            app:tint="#999999"
+                            />
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/btnChangePhoto"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:layout_alignBottom="@id/cardProfileImage"
                         android:layout_alignEnd="@id/cardProfileImage"
+                        android:layout_alignBottom="@id/cardProfileImage"
                         android:layout_marginEnd="4dp"
                         android:layout_marginBottom="4dp"
-                        app:cardBackgroundColor="#1E1C38"
+                        app:cardBackgroundColor="#FFFFFF"
                         app:cardCornerRadius="18dp"
                         app:cardElevation="4dp"
                         app:strokeWidth="0dp">
@@ -67,9 +68,9 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_camera"
                             android:contentDescription="Alterar foto de perfil"
-                            app:tint="#FFFFFF" />
+                            android:src="@drawable/ic_camera"
+                            app:tint="#000000" />
                     </com.google.android.material.card.MaterialCardView>
                 </RelativeLayout>
 
@@ -88,12 +89,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="estudante@stuble.com"
-                    android:textColor="#E0DEFF"
+                    android:textColor="#E0E7FF"
                     android:textSize="14sp" />
             </LinearLayout>
         </RelativeLayout>
 
-        <!-- CORPO DE CONFIGURAÇÕES COM CARDS ARREDONDADOS -->
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -108,104 +108,157 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
-                <!-- SEÇÃO: MÉTRICAS COMPILADAS -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:text="Seu Progresso de Estudos"
-                    android:textColor="#6C63FF"
+                    android:textAllCaps="true"
+                    android:textColor="#4F46E5"
                     android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textAllCaps="true" />
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="28dp">
+                    android:layout_marginBottom="14dp"
+                    android:orientation="horizontal">
 
-                    <!-- Card Esquerdo: Questões Respondidas -->
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="100dp"
+                        android:layout_marginEnd="6dp"
                         android:layout_weight="1"
-                        android:layout_marginEnd="8dp"
                         app:cardBackgroundColor="#FFFFFF"
                         app:cardCornerRadius="24dp"
                         app:cardElevation="2dp"
                         app:strokeWidth="0dp">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:orientation="vertical"
                             android:padding="8dp">
+
                             <TextView
                                 android:id="@+id/txtStatQuestoes"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0"
-                                android:textColor="#6C63FF"
+                                android:textColor="#4F46E5"
                                 android:textSize="26sp"
                                 android:textStyle="bold" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
+                                android:gravity="center"
                                 android:text="Questões Feitas"
-                                android:textColor="#7A7995"
-                                android:textSize="12sp"
-                                android:gravity="center" />
+                                android:textColor="#64748B"
+                                android:textSize="12sp" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Card Direito: Taxa de Acertos -->
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="100dp"
+                        android:layout_marginStart="6dp"
                         android:layout_weight="1"
-                        android:layout_marginStart="8dp"
-                        app:cardBackgroundColor="#FFF5EE"
+                        app:cardBackgroundColor="#FFFFFF"
                         app:cardCornerRadius="24dp"
                         app:cardElevation="2dp"
                         app:strokeWidth="0dp">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:orientation="vertical"
                             android:padding="8dp">
+
                             <TextView
                                 android:id="@+id/txtStatAcertos"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0%"
-                                android:textColor="#D35400"
+                                android:textColor="#EA580C"
                                 android:textSize="26sp"
                                 android:textStyle="bold" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
+                                android:gravity="center"
                                 android:text="Taxa de Acerto"
-                                android:textColor="#A04000"
-                                android:textSize="12sp"
-                                android:gravity="center" />
+                                android:textColor="#9A3412"
+                                android:textSize="12sp" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
 
-                <!-- SEÇÃO: OPÇÕES DA CONTA -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="86dp"
+                    android:layout_marginBottom="28dp"
+                    app:cardBackgroundColor="#FEF3C7"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp">
+
+                        <TextView
+                            android:layout_width="46dp"
+                            android:layout_height="46dp"
+                            android:gravity="center"
+                            android:text="🔥"
+                            android:textSize="30sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ofensiva de estudos"
+                                android:textColor="#92400E"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtStatOfensiva"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="0 dias seguidos"
+                                android:textColor="#B45309"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:text="Configurações do App"
-                    android:textColor="#7A7995"
+                    android:textAllCaps="true"
+                    android:textColor="#64748B"
                     android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textAllCaps="true" />
+                    android:textStyle="bold" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
@@ -228,11 +281,11 @@
                             android:layout_height="60dp"
                             android:gravity="start|center_vertical"
                             android:text="Alterar Nome de Usuário"
-                            android:textColor="#1E1C38"
+                            android:textColor="#111827"
                             android:textSize="15sp"
                             app:icon="@drawable/ic_edit"
                             app:iconPadding="16dp"
-                            app:iconTint="#6C63FF" />
+                            app:iconTint="#4F46E5" />
 
                         <View
                             android:layout_width="match_parent"
@@ -247,11 +300,11 @@
                             android:layout_height="60dp"
                             android:gravity="start|center_vertical"
                             android:text="Redefinir Senha de Acesso"
-                            android:textColor="#1E1C38"
+                            android:textColor="#111827"
                             android:textSize="15sp"
                             app:icon="@drawable/ic_lock"
                             app:iconPadding="16dp"
-                            app:iconTint="#6C63FF" />
+                            app:iconTint="#4F46E5" />
 
                         <View
                             android:layout_width="match_parent"
@@ -266,20 +319,19 @@
                             android:layout_height="60dp"
                             android:gravity="start|center_vertical"
                             android:text="Configurações de Notificação"
-                            android:textColor="#1E1C38"
+                            android:textColor="#111827"
                             android:textSize="15sp"
                             app:icon="@drawable/ic_notifications"
                             app:iconPadding="16dp"
-                            app:iconTint="#6C63FF" />
+                            app:iconTint="#4F46E5" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- BOTÃO SAIR CORRIGIDO VISUALMENTE E ESTRUTURALMENTE -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="32dp"
-                    app:cardBackgroundColor="#FFF0F2"
+                    app:cardBackgroundColor="#FFF1F2"
                     app:cardCornerRadius="24dp"
                     app:cardElevation="0dp"
                     app:strokeWidth="0dp">
@@ -291,14 +343,15 @@
                         android:layout_height="60dp"
                         android:gravity="start|center_vertical"
                         android:text="Sair da Conta Stuble"
-                        android:textColor="#FF4A5A"
+                        android:textColor="#E11D48"
                         android:textSize="15sp"
                         app:icon="@drawable/ic_logout"
                         app:iconPadding="16dp"
-                        app:iconTint="#FF4A5A" />
+                        app:iconTint="#E11D48" />
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

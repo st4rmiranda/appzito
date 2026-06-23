@@ -43,7 +43,6 @@ class QuizActivity : AppCompatActivity() {
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
-        .addInterceptor(RetryInterceptor(maxRetries = 3))
         .build()
 
     private val apiKey = BuildConfig.GEMINI_API_KEY
@@ -76,6 +75,15 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun buscarPerguntaIA() {
+        val perguntaCache = QuestionCacheManager.obterProximaPergunta(this)
+
+        if (perguntaCache != null) {
+            perguntaAtual = perguntaCache
+            exibirPerguntaNoLayout(perguntaCache)
+            bloquearBotaoConfirmar(false)
+            return
+        }
+
         runOnUiThread {
             findViewById<MaterialCardView>(R.id.cardExplanation).visibility = View.GONE
             findViewById<TextView>(R.id.txtCount).text = "Questão ${respondidas + 1} de $TOTAL_QUESTOES"
@@ -144,12 +152,15 @@ class QuizActivity : AppCompatActivity() {
                         val inicio = textoIA.indexOf("{")
                         val fim = textoIA.lastIndexOf("}") + 1
                         val p = Gson().fromJson(textoIA.substring(inicio, fim), Pergunta::class.java)
-
                         perguntaAtual = p
+                        QuestionCacheManager.salvarPergunta(this@QuizActivity, p)
+
                         runOnUiThread {
                             exibirPerguntaNoLayout(p)
                             bloquearBotaoConfirmar(false)
                         }
+
+
                     } catch (e: Exception) {
                         Log.e("QUIZ_STUBLE", "Erro no processamento: ${e.message}")
                         buscarPerguntaIA()
@@ -177,40 +188,68 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun verificarResposta() {
+
         val rg = findViewById<RadioGroup>(R.id.rgOptions)
         val selectedId = rg.checkedRadioButtonId
 
         if (selectedId == -1) {
-            Toast.makeText(this, "Selecione uma opção!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "Selecione uma opção!",
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
 
-        val rbSelecionado = findViewById<RadioButton>(selectedId)
-        val indice = rg.indexOfChild(rbSelecionado)
+        val rbSelecionado =
+            findViewById<RadioButton>(selectedId)
 
-        if (indice == perguntaAtual?.correta) {
+        val indice =
+            rg.indexOfChild(rbSelecionado)
+
+        val acertou =
+            indice == perguntaAtual?.correta
+
+        ProgressManager.adicionarQuestaoRespondida(
+            this,
+            acertou
+        )
+
+        if (acertou) {
+
             proximaQuestaoOuFinalizar()
+
         } else {
+
             modoExplicacaoAtivo = true
 
-            findViewById<TextView>(R.id.txtExplanation).text = perguntaAtual?.explicacao ?: "Sem explicação disponível."
-            findViewById<MaterialCardView>(R.id.cardExplanation).visibility = View.VISIBLE
+            findViewById<TextView>(R.id.txtExplanation).text =
+                perguntaAtual?.explicacao
+                    ?: "Sem explicação disponível."
+
+            findViewById<MaterialCardView>(
+                R.id.cardExplanation
+            ).visibility = View.VISIBLE
 
             for (i in 0 until rg.childCount) {
                 rg.getChildAt(i).isEnabled = false
             }
 
-            val btn = findViewById<MaterialButton>(R.id.btnConfirm)
-            btn.text = "CONTINUAR"
+            findViewById<MaterialButton>(
+                R.id.btnConfirm
+            ).text = "CONTINUAR"
 
-            findViewById<NestedScrollView>(R.id.quizScrollView).post {
-                findViewById<NestedScrollView>(R.id.quizScrollView).fullScroll(View.FOCUS_DOWN)
+            findViewById<NestedScrollView>(
+                R.id.quizScrollView
+            ).post {
+                findViewById<NestedScrollView>(
+                    R.id.quizScrollView
+                ).fullScroll(View.FOCUS_DOWN)
             }
         }
     }
 
     private fun proximaQuestaoOuFinalizar() {
-        ProgressManager.adicionarQuestaoRespondida(this)
         respondidas++
 
         val progressoPercentual = ((respondidas.toFloat() / TOTAL_QUESTOES) * 100).toInt()
