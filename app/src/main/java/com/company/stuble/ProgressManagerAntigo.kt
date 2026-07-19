@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-object ProgressManager {
+object ProgressManagerAntigo {
 
     private const val PREFS = "stuble_progress"
 

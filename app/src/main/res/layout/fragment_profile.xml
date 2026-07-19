@@ -2,10 +2,10 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://tools.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F8FC"
+    android:background="#F8FAFF"
     tools:context=".ProfileFragment">
 
     <LinearLayout
@@ -15,9 +15,21 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="280dp"
+            android:layout_height="294dp"
             android:background="#4F46E5"
-            android:paddingBottom="40dp">
+            android:paddingBottom="44dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="22dp"
+                android:text="MEU ESPAÇO ✨"
+                android:textColor="#C7D2FE"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.08" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -29,13 +41,13 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="14dp">
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/cardProfileImage"
-                        android:layout_width="114dp"
-                        android:layout_height="114dp"
-                        app:cardCornerRadius="57dp"
+                        android:layout_width="116dp"
+                        android:layout_height="116dp"
+                        app:cardCornerRadius="58dp"
                         app:cardElevation="0dp"
                         app:strokeColor="#FFFFFF"
                         app:strokeWidth="4dp">
@@ -46,31 +58,30 @@
                             android:layout_height="match_parent"
                             android:contentDescription="Foto de perfil do estudante"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_person"
-                            app:tint="#999999"
-                            />
+                            android:src="@drawable/ic_user_placeholder" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/btnChangePhoto"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
                         android:layout_alignEnd="@id/cardProfileImage"
                         android:layout_alignBottom="@id/cardProfileImage"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginBottom="2dp"
                         app:cardBackgroundColor="#FFFFFF"
-                        app:cardCornerRadius="18dp"
-                        app:cardElevation="4dp"
-                        app:strokeWidth="0dp">
+                        app:cardCornerRadius="19dp"
+                        app:cardElevation="5dp"
+                        app:strokeColor="#E0E7FF"
+                        app:strokeWidth="1dp">
 
                         <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            android:layout_width="17dp"
+                            android:layout_height="17dp"
                             android:layout_gravity="center"
                             android:contentDescription="Alterar foto de perfil"
                             android:src="@drawable/ic_camera"
-                            app:tint="#000000" />
+                            app:tint="#4F46E5" />
                     </com.google.android.material.card.MaterialCardView>
                 </RelativeLayout>
 
@@ -80,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:text="Nome do Estudante"
                     android:textColor="#FFFFFF"
-                    android:textSize="24sp"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -97,49 +108,59 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="-40dp"
+            android:layout_marginTop="-42dp"
             android:background="@drawable/fundo_perfil_arredondado"
             android:elevation="4dp"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            android:overScrollMode="never">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="24dp">
+                android:paddingStart="22dp"
+                android:paddingTop="25dp"
+                android:paddingEnd="22dp"
+                android:paddingBottom="36dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    android:text="Seu Progresso de Estudos"
-                    android:textAllCaps="true"
+                    android:text="SEU PROGRESSO"
                     android:textColor="#4F46E5"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:letterSpacing="0.07" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
+                    android:layout_marginBottom="12dp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
-                        android:layout_height="100dp"
+                        android:layout_height="105dp"
                         android:layout_marginEnd="6dp"
                         android:layout_weight="1"
-                        app:cardBackgroundColor="#FFFFFF"
+                        app:cardBackgroundColor="#EEF2FF"
                         app:cardCornerRadius="24dp"
-                        app:cardElevation="2dp"
-                        app:strokeWidth="0dp">
+                        app:cardElevation="0dp"
+                        app:strokeColor="#C7D2FE"
+                        app:strokeWidth="1dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="8dp">
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="📚"
+                                android:textSize="20sp" />
 
                             <TextView
                                 android:id="@+id/txtStatQuestoes"
@@ -147,36 +168,40 @@
                                 android:layout_height="wrap_content"
                                 android:text="0"
                                 android:textColor="#4F46E5"
-                                android:textSize="26sp"
+                                android:textSize="25sp"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:gravity="center"
-                                android:text="Questões Feitas"
-                                android:textColor="#64748B"
+                                android:text="Questões feitas"
+                                android:textColor="#4338CA"
                                 android:textSize="12sp" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
-                        android:layout_height="100dp"
+                        android:layout_height="105dp"
                         android:layout_marginStart="6dp"
                         android:layout_weight="1"
-                        app:cardBackgroundColor="#FFFFFF"
+                        app:cardBackgroundColor="#FFF7ED"
                         app:cardCornerRadius="24dp"
-                        app:cardElevation="2dp"
-                        app:strokeWidth="0dp">
+                        app:cardElevation="0dp"
+                        app:strokeColor="#FED7AA"
+                        app:strokeWidth="1dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="8dp">
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🎯"
+                                android:textSize="20sp" />
 
                             <TextView
                                 android:id="@+id/txtStatAcertos"
@@ -184,15 +209,13 @@
                                 android:layout_height="wrap_content"
                                 android:text="0%"
                                 android:textColor="#EA580C"
-                                android:textSize="26sp"
+                                android:textSize="25sp"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:gravity="center"
-                                android:text="Taxa de Acerto"
+                                android:text="Taxa de acerto"
                                 android:textColor="#9A3412"
                                 android:textSize="12sp" />
                         </LinearLayout>
@@ -201,24 +224,25 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="86dp"
-                    android:layout_marginBottom="28dp"
+                    android:layout_height="82dp"
+                    android:layout_marginBottom="25dp"
                     app:cardBackgroundColor="#FEF3C7"
                     app:cardCornerRadius="24dp"
-                    app:cardElevation="2dp"
-                    app:strokeWidth="0dp">
+                    app:cardElevation="0dp"
+                    app:strokeColor="#FDE68A"
+                    app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp">
+                        android:paddingStart="18dp"
+                        android:paddingEnd="18dp">
 
                         <TextView
-                            android:layout_width="46dp"
-                            android:layout_height="46dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:gravity="center"
                             android:text="🔥"
                             android:textSize="30sp" />
@@ -226,7 +250,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="14dp"
+                            android:layout_marginStart="12dp"
                             android:layout_weight="1"
                             android:orientation="vertical">
 
@@ -235,7 +259,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Ofensiva de estudos"
                                 android:textColor="#92400E"
-                                android:textSize="15sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -243,7 +267,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="0 dias seguidos"
+                                android:text="Comece sua missão de hoje"
                                 android:textColor="#B45309"
                                 android:textSize="13sp" />
                         </LinearLayout>
@@ -254,20 +278,165 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    android:text="Configurações do App"
-                    android:textAllCaps="true"
-                    android:textColor="#64748B"
+                    android:text="SEU JEITO DE ESTUDAR"
+                    android:textColor="#4F46E5"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:letterSpacing="0.07" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="26dp"
+                    app:cardBackgroundColor="#4F46E5"
+                    app:cardCornerRadius="28dp"
+                    app:cardElevation="3dp"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:background="@drawable/bg_profile_personalizacao_icon"
+                                android:gravity="center"
+                                android:text="🧠"
+                                android:textSize="25sp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="13dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Seu plano personalizado"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="3dp"
+                                    android:text="A IA usa essas escolhas para montar suas questões."
+                                    android:textColor="#E0E7FF"
+                                    android:textSize="13sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="OBJETIVO"
+                                android:textColor="#C7D2FE"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtPerfilObjetivo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Defina seu objetivo"
+                                android:textColor="#FFFFFF"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="13dp"
+                                android:text="NÍVEL E ETAPA"
+                                android:textColor="#C7D2FE"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtPerfilNivel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Misto"
+                                android:textColor="#FFFFFF"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="13dp"
+                                android:text="MATÉRIAS PARA REFORÇAR"
+                                android:textColor="#C7D2FE"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtPerfilMaterias"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:maxLines="2"
+                                android:text="Nenhuma matéria selecionada"
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnPersonalizarEstudos"
+                            android:layout_width="match_parent"
+                            android:layout_height="54dp"
+                            android:layout_marginTop="19dp"
+                            android:text="AJUSTAR MINHA PERSONALIZAÇÃO"
+                            android:textColor="#4338CA"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="#FFFFFF"
+                            app:cornerRadius="17dp"
+                            app:icon="@drawable/ic_edit"
+                            app:iconTint="#4F46E5"
+                            app:iconPadding="10dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:text="CONTA E PREFERÊNCIAS"
+                    android:textColor="#64748B"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.07" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="22dp"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="24dp"
-                    app:cardElevation="2dp"
-                    app:strokeWidth="0dp">
+                    app:cardElevation="1dp"
+                    app:strokeColor="#E5E7EB"
+                    app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -278,9 +447,9 @@
                             android:id="@+id/btnEditName"
                             style="@style/Widget.Material3.Button.TextButton"
                             android:layout_width="match_parent"
-                            android:layout_height="60dp"
+                            android:layout_height="62dp"
                             android:gravity="start|center_vertical"
-                            android:text="Alterar Nome de Usuário"
+                            android:text="Alterar nome de usuário"
                             android:textColor="#111827"
                             android:textSize="15sp"
                             app:icon="@drawable/ic_edit"
@@ -290,16 +459,16 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginStart="56dp"
-                            android:background="#F0F1F5" />
+                            android:layout_marginStart="58dp"
+                            android:background="#EEF0F5" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnChangePassword"
                             style="@style/Widget.Material3.Button.TextButton"
                             android:layout_width="match_parent"
-                            android:layout_height="60dp"
+                            android:layout_height="62dp"
                             android:gravity="start|center_vertical"
-                            android:text="Redefinir Senha de Acesso"
+                            android:text="Redefinir senha de acesso"
                             android:textColor="#111827"
                             android:textSize="15sp"
                             app:icon="@drawable/ic_lock"
@@ -309,16 +478,16 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginStart="56dp"
-                            android:background="#F0F1F5" />
+                            android:layout_marginStart="58dp"
+                            android:background="#EEF0F5" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnNotifications"
                             style="@style/Widget.Material3.Button.TextButton"
                             android:layout_width="match_parent"
-                            android:layout_height="60dp"
+                            android:layout_height="62dp"
                             android:gravity="start|center_vertical"
-                            android:text="Configurações de Notificação"
+                            android:text="Notificações do Stuble"
                             android:textColor="#111827"
                             android:textSize="15sp"
                             app:icon="@drawable/ic_notifications"
@@ -330,11 +499,11 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="32dp"
                     app:cardBackgroundColor="#FFF1F2"
-                    app:cardCornerRadius="24dp"
+                    app:cardCornerRadius="22dp"
                     app:cardElevation="0dp"
-                    app:strokeWidth="0dp">
+                    app:strokeColor="#FECDD3"
+                    app:strokeWidth="1dp">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnLogout"
@@ -342,7 +511,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:gravity="start|center_vertical"
-                        android:text="Sair da Conta Stuble"
+                        android:text="Sair da conta Stuble"
                         android:textColor="#E11D48"
                         android:textSize="15sp"
                         app:icon="@drawable/ic_logout"

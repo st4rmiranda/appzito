@@ -34,7 +34,7 @@ class HomeFragment : Fragment() {
         val btnIniciar = view.findViewById<Button>(R.id.btnStartQuestions)
 
         btnIniciar.setOnClickListener {
-            val intent = Intent(requireContext(), QuizActivity::class.java)
+            val intent = Intent(requireContext(), LoadingActivity::class.java)
             startActivity(intent)
         }
     }
@@ -48,9 +48,9 @@ class HomeFragment : Fragment() {
         val context = requireContext()
         val view = requireView()
 
-        val respondidasHoje = ProgressManager.getQuestoesHoje(context)
-        val totalQuestoes = ProgressManager.getTotalQuestoes(context)
-        val taxaAcerto = ProgressManager.getTaxaAcerto(context)
+        val respondidasHoje = ProgressManagerAntigo.getQuestoesHoje(context)
+        val totalQuestoes = ProgressManagerAntigo.getTotalQuestoes(context)
+        val taxaAcerto = ProgressManagerAntigo.getTaxaAcerto(context)
 
         val percentualMissao = ((respondidasHoje.toFloat() / 20f) * 100).toInt()
         val percentualSeguro = percentualMissao.coerceIn(0, 100)
@@ -79,7 +79,7 @@ class HomeFragment : Fragment() {
             "$taxaAcerto%"
 
         view.findViewById<TextView>(R.id.txtStreak).text =
-            "${ProgressManager.getQuestoesHoje(context)}"
+            "${ProgressManagerAntigo.getQuestoesHoje(context)}"
 
         view.findViewById<TextView>(R.id.txtMissoes).text =
             (totalQuestoes / 20).toString()
