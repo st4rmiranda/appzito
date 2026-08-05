@@ -152,5 +152,5 @@ app/src/main/java/com/company/stuble/
 
 ## Autores
 
-João Pedro M. Miguel, Vitor Henrique Miranda Carvalho, Vitor Farias Oliveira e
+Vitor Henrique Miranda Carvalho, Vitor Farias Oliveira e
 Isabella de Oliveira Gimenes Veloso.
