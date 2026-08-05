@@ -10,15 +10,10 @@ plugins {
 android {
     namespace = "com.company.stuble"
     compileSdk = 34
-    buildFeatures { buildConfig = true }
-    defaultConfig {
-        buildConfigField(
-            "String",
-            "GEMINI_API_KEY",
-            "\"${project.findProperty("GEMINI_API_KEY")}\""
-        )}
 
-
+    buildFeatures {
+        buildConfig = true
+    }
 
     defaultConfig {
         applicationId = "com.company.stuble"
@@ -28,6 +23,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "GEMINI_API_KEY",
+            "\"${project.findProperty("GEMINI_API_KEY")}\""
+        )
     }
 
     buildTypes {
@@ -44,8 +45,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    buildFeatures {
-        buildConfig = true // Adicione esta linha aqui!
+    testOptions {
+        unitTests {
+            isReturnDefaultValues = true
+        }
     }
 }
 
@@ -63,6 +66,9 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.cardview.v7)
     testImplementation(libs.junit)
+    testImplementation("io.mockk:mockk:1.13.13")
+    testImplementation("org.robolectric:robolectric:4.13")
+    testImplementation("androidx.test:core:1.6.1")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.google.ai.client.generativeai:generativeai:0.4.0")
@@ -74,6 +80,7 @@ dependencies {
     // Google Sign-In (para o login federado)
     implementation("com.google.android.gms:play-services-auth:21.1.1")
     implementation("com.airbnb.android:lottie:6.4.0")
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
+    implementation("androidx.core:core-ktx:1.13.1")
 }
