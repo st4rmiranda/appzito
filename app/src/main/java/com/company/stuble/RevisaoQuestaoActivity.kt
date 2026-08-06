@@ -98,6 +98,9 @@ class RevisaoQuestaoActivity : AppCompatActivity() {
             Toast.makeText(this, "Resposta correta! ✅", Toast.LENGTH_SHORT).show()
             finish()
         } else {
+            for (i in 0 until rgOptions.childCount) {
+                rgOptions.getChildAt(i).isEnabled = false
+            }
             txtExplicacao.text = pergunta.explicacao
             cardExplicacao.isVisible = true
             btnConfirmar.text = "FECHAR"

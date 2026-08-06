@@ -54,10 +54,12 @@
 
         <activity
             android:name=".RevisaoQuestaoActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
 
         <activity
             android:name=".RevisaoErrosActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
 
         <activity

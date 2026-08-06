@@ -49,6 +49,13 @@ class HomeFragment : Fragment() {
                     Intent(requireContext(), RevisaoErrosActivity::class.java)
                 )
             }
+
+        view.findViewById<View>(R.id.cardRevisaoErros)
+            .setOnClickListener {
+                startActivity(
+                    Intent(requireContext(), RevisaoErrosActivity::class.java)
+                )
+            }
     }
 
     override fun onResume() {
