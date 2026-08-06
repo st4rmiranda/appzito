@@ -53,6 +53,10 @@
             android:exported="false" />
 
         <activity
+            android:name=".RevisaoQuestaoActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ExplanationActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
