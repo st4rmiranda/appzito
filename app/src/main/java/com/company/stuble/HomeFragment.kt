@@ -12,10 +12,12 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.company.stuble.data.Conquista
 import com.company.stuble.data.GamificacaoManager
 import com.company.stuble.data.ProgressManager
+import com.company.stuble.data.RevisaoErrosManager
 import com.google.firebase.auth.FirebaseAuth
 import kotlin.math.max
 
@@ -38,6 +40,13 @@ class HomeFragment : Fragment() {
             .setOnClickListener {
                 startActivity(
                     Intent(requireContext(), LoadingActivity::class.java)
+                )
+            }
+
+        view.findViewById<Button>(R.id.btnRevisarErros)
+            .setOnClickListener {
+                startActivity(
+                    Intent(requireContext(), RevisaoErrosActivity::class.java)
                 )
             }
     }
@@ -108,6 +117,7 @@ class HomeFragment : Fragment() {
         atualizarCalendario(view)
         atualizarEstatisticas(view)
         atualizarConquistas(view)
+        atualizarCardRevisaoErros(view)
     }
 
     private fun atualizarNivel(view: View) {
@@ -276,6 +286,22 @@ class HomeFragment : Fragment() {
 
         conquistas.take(4).forEach { conquista ->
             container.addView(criarItemConquista(conquista))
+        }
+    }
+
+    private fun atualizarCardRevisaoErros(view: View) {
+        val quantidade = RevisaoErrosManager.quantidade(requireContext())
+        val card = view.findViewById<View>(R.id.cardRevisaoErros)
+
+        card.isVisible = quantidade > 0
+
+        if (quantidade > 0) {
+            view.findViewById<TextView>(R.id.txtRevisaoErrosResumo).text =
+                if (quantidade == 1) {
+                    "1 questão para revisar"
+                } else {
+                    "$quantidade questões para revisar"
+                }
         }
     }
 
