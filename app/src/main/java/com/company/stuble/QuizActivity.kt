@@ -19,6 +19,7 @@ import com.company.stuble.data.QuizStateManager
 import com.company.stuble.data.ResultadoGamificacao
 import com.company.stuble.data.PerfilManager
 import com.company.stuble.data.ProgressManager
+import com.company.stuble.data.RevisaoErrosManager
 import com.company.stuble.model.Pergunta
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -393,6 +394,8 @@ class QuizActivity : AppCompatActivity() {
 
             proximaQuestaoOuFinalizar()
         } else {
+            RevisaoErrosManager.registrarErro(this, pergunta)
+
             modoExplicacaoAtivo = true
             txtExplanation.text = pergunta.explicacao
             cardExplanation.isVisible = true
