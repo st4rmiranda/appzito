@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAFBFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVoltarRevisaoQuestao"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:contentDescription="Voltar"
+            app:icon="@drawable/ic_back"
+            app:iconTint="#2D3243"
+            app:iconGravity="textStart"
+            app:backgroundTint="#FFFFFF"
+            app:strokeColor="#E0E0E0"
+            app:strokeWidth="1dp"
+            app:cornerRadius="24dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Refazendo questão"
+            android:textColor="#2D3243"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/revisaoQuestaoScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp">
+
+                    <TextView
+                        android:id="@+id/txtRevisaoQuestaoEnunciado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="24dp"
+                        android:lineSpacingExtra="4dp"
+                        android:text="Carregando enunciado..."
+                        android:textColor="#2D3243"
+                        android:textSize="18sp" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <RadioGroup
+                    android:id="@+id/rgRevisaoOptions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp">
+
+                    <RadioButton
+                        android:id="@+id/revisaoOpt1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_opcao_quiz"
+                        android:button="@null"
+                        android:padding="18dp"
+                        android:text="Alternativa A"
+                        android:textColor="#2D3243"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/revisaoOpt2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_opcao_quiz"
+                        android:button="@null"
+                        android:padding="18dp"
+                        android:text="Alternativa B"
+                        android:textColor="#2D3243"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/revisaoOpt3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_opcao_quiz"
+                        android:button="@null"
+                        android:padding="18dp"
+                        android:text="Alternativa C"
+                        android:textColor="#2D3243"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/revisaoOpt4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_opcao_quiz"
+                        android:button="@null"
+                        android:padding="18dp"
+                        android:text="Alternativa D"
+                        android:textColor="#2D3243"
+                        android:textSize="16sp" />
+                </RadioGroup>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardRevisaoExplicacao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="#FFF0F0"
+                    app:cardCornerRadius="18dp"
+                    app:strokeColor="#FFCDCD"
+                    app:strokeWidth="1dp"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Resposta Incorreta ❌"
+                            android:textColor="#C62828"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtRevisaoQuestaoExplicacao"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:lineSpacingExtra="3dp"
+                            android:text="Explicação..."
+                            android:textColor="#5D4037"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRevisaoConfirmar"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:text="CONFIRMAR RESPOSTA"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="#6C63FF"
+            app:cornerRadius="16dp" />
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

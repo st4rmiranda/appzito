@@ -16,7 +16,9 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.company.stuble.data.GamificacaoManager
 import com.company.stuble.data.PerfilManager
+import com.company.stuble.data.ProgressManager
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -86,13 +88,13 @@ class ProfileFragment : Fragment() {
         val txtOfensiva = view.findViewById<TextView>(R.id.txtStatOfensiva)
 
         txtQuestoes.text =
-            ProgressManagerAntigo.getTotalQuestoes(requireContext()).toString()
+            GamificacaoManager.getTotalQuestoes(requireContext()).toString()
 
         txtAcertos.text =
-            "${ProgressManagerAntigo.getTaxaAcerto(requireContext())}%"
+            "${GamificacaoManager.getTaxaAcerto(requireContext())}%"
 
         val questoesHoje =
-            ProgressManagerAntigo.getQuestoesHoje(requireContext())
+            ProgressManager.getQuestoesRespondidasHoje(requireContext())
 
         txtOfensiva.text = when (questoesHoje) {
             0 -> "Comece sua missão de hoje"
