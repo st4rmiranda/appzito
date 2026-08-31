@@ -174,53 +174,96 @@ class HomeFragment : Fragment() {
 
         container.removeAllViews()
 
-        GamificacaoManager
+        val ordemDias = mapOf(
+            "Dom" to 0,
+            "Seg" to 1,
+            "Ter" to 2,
+            "Qua" to 3,
+            "Qui" to 4,
+            "Sex" to 5,
+            "Sáb" to 6
+        )
+
+        val calendario = GamificacaoManager
             .obterCalendarioSemanal(requireContext())
-            .forEach { dia ->
-                val coluna = LinearLayout(requireContext()).apply {
-                    orientation = LinearLayout.VERTICAL
-                    gravity = Gravity.CENTER
-                    layoutParams = LinearLayout.LayoutParams(
-                        0,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        1f
-                    )
+            .sortedBy { dia ->
+                ordemDias[dia.rotulo] ?: 99
+            }
+
+        calendario.forEach { dia ->
+
+            val coluna = LinearLayout(requireContext()).apply {
+                orientation = LinearLayout.VERTICAL
+                gravity = Gravity.CENTER
+
+                layoutParams = LinearLayout.LayoutParams(
+                    0,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    1f
+                )
+            }
+
+            val bolinha = TextView(requireContext()).apply {
+
+                text = if (dia.estudou) "✓" else "•"
+
+                gravity = Gravity.CENTER
+
+                textSize = if (dia.estudou) {
+                    17f
+                } else {
+                    24f
                 }
 
-                val bolinha = TextView(requireContext()).apply {
-                    text = if (dia.estudou) "✓" else "•"
-                    gravity = Gravity.CENTER
-                    textSize = if (dia.estudou) 17f else 24f
-                    setTextColor(
-                        Color.parseColor(
-                            if (dia.estudou) "#FFFFFF" else "#94A3B8"
-                        )
-                    )
-                    setBackgroundResource(
+                setTextColor(
+                    Color.parseColor(
                         if (dia.estudou) {
-                            R.drawable.bg_calendar_active
+                            "#FFFFFF"
                         } else {
-                            R.drawable.bg_calendar_inactive
+                            "#94A3B8"
                         }
                     )
-                    layoutParams = LinearLayout.LayoutParams(
-                        dp(38),
-                        dp(38)
-                    )
-                }
+                )
 
-                val rotulo = TextView(requireContext()).apply {
-                    text = dia.rotulo
-                    textSize = 11f
-                    gravity = Gravity.CENTER
-                    setTextColor(Color.parseColor("#64748B"))
-                    setPadding(0, dp(6), 0, 0)
-                }
+                setBackgroundResource(
+                    if (dia.estudou) {
+                        R.drawable.bg_calendar_active
+                    } else {
+                        R.drawable.bg_calendar_inactive
+                    }
+                )
 
-                coluna.addView(bolinha)
-                coluna.addView(rotulo)
-                container.addView(coluna)
+                layoutParams = LinearLayout.LayoutParams(
+                    dp(38),
+                    dp(38)
+                )
             }
+
+            val rotulo = TextView(requireContext()).apply {
+
+                text = dia.rotulo
+
+                textSize = 11f
+
+                gravity = Gravity.CENTER
+
+                setTextColor(
+                    Color.parseColor("#64748B")
+                )
+
+                setPadding(
+                    0,
+                    dp(6),
+                    0,
+                    0
+                )
+            }
+
+            coluna.addView(bolinha)
+            coluna.addView(rotulo)
+
+            container.addView(coluna)
+        }
     }
 
     private fun atualizarEstatisticas(view: View) {

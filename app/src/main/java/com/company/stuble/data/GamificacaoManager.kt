@@ -292,11 +292,11 @@ object GamificacaoManager {
     private fun obterNivelPorXp(xp: Int): NivelInfo {
         val faixas = listOf(
             Triple(0, "Calouro", "🌱"),
-            Triple(100, "Estudante", "📖"),
-            Triple(300, "Vestibulando", "📝"),
-            Triple(700, "Especialista", "🎓"),
-            Triple(1500, "Mestre", "🚀"),
-            Triple(3000, "Lenda Stuble", "👑")
+            Triple(200, "Estudante", "📖"),
+            Triple(500, "Vestibulando", "📝"),
+            Triple(1000, "Especialista", "🎓"),
+            Triple(2000, "Mestre", "🚀"),
+            Triple(3500, "Lenda Stuble", "👑")
         )
 
         val indice = faixas.indexOfLast { xp >= it.first }.coerceAtLeast(0)

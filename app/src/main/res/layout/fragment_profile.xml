@@ -58,7 +58,7 @@
                             android:layout_height="match_parent"
                             android:contentDescription="Foto de perfil do estudante"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_user_placeholder" />
+                            android:src="@drawable/ic_person" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView

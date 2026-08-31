@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "586476792805-1vb1q6t5si5beask2mclfmechpp3kg47.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.company.stuble",
+            "certificate_hash": "0a547e165a67e7dfdc4409cb421677c8483126bc"
+          }
+        },
+        {
           "client_id": "586476792805-mf8vdeec3c5pk1imb7outmus4ccffmfv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

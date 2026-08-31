@@ -54,6 +54,10 @@ class LoginActivity : AppCompatActivity() {
             val signInIntent = googleSignInClient.signInIntent
             launcher.launch(signInIntent)
         }
+
+        findViewById<Button>(R.id.btnEmailLogin).setOnClickListener {
+            startActivity(Intent(this, LoginEmailActivity::class.java))
+        }
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

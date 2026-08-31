@@ -3,6 +3,7 @@ package com.company.stuble
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.company.stuble.NotificationHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
@@ -16,6 +17,8 @@ class MainActivity : AppCompatActivity() {
 
         // Inicializa o Firebase (opcional se já estiver no Application)
         val database = Firebase.database
+
+        NotificationHelper.scheduleDailyNotifications(this)
 
         // 2. Agora o findViewById vai funcionar, pois o layout já foi carregado acima
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)

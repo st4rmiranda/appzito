@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.cardview.widget.CardView
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import androidx.fragment.app.Fragment
 
 private const val ARG_PARAM1 = "param1"
@@ -44,16 +45,7 @@ class SearchFragment : Fragment() {
         btnPesquisar.setOnClickListener {
             val materia = etPesquisa.text.toString().trim()
             if (materia.isNotEmpty()) {
-                // Abre a caixinha de diálogo para o aluno escolher o formato do Mentor IA
-                val opcoes = arrayOf("Explicação em Texto", "Mapa Mental Visual")
-
-                AlertDialog.Builder(requireContext())
-                    .setTitle("Como prefere estudar $materia?")
-                    .setItems(opcoes) { _, idx ->
-                        val tipoEscolhido = if (idx == 0) "TEXTO" else "MAPA_MENTAL"
-                        abrirExplonacao(materia, tipoEscolhido)
-                    }
-                    .show()
+                mostrarDialogoEscolha(materia)
             } else {
                 Toast.makeText(context, "Digite uma matéria para pesquisar!", Toast.LENGTH_SHORT).show()
             }
@@ -77,10 +69,66 @@ class SearchFragment : Fragment() {
         }
 
         // Configura o evento de clique em cada CardView da tela
-        view.findViewById<CardView>(R.id.cardLinguagens).setOnClickListener(cliqueCardQuiz)
-        view.findViewById<CardView>(R.id.cardExatas).setOnClickListener(cliqueCardQuiz)
-        view.findViewById<CardView>(R.id.cardBiologia).setOnClickListener(cliqueCardQuiz)
-        view.findViewById<CardView>(R.id.cardHumanas).setOnClickListener(cliqueCardQuiz)
+        view.findViewById<View>(R.id.cardLinguagens).setOnClickListener(cliqueCardQuiz)
+        view.findViewById<View>(R.id.cardExatas).setOnClickListener(cliqueCardQuiz)
+        view.findViewById<View>(R.id.cardBiologia).setOnClickListener(cliqueCardQuiz)
+        view.findViewById<View>(R.id.cardHumanas).setOnClickListener(cliqueCardQuiz)
+
+        // Botão Recomendado
+        view.findViewById<MaterialButton>(R.id.btnComecarRecomendado).setOnClickListener {
+            val intent = Intent(context, QuizActivity::class.java).apply {
+                putExtra("COMPETENCIA_FILTRO", "Matemática e suas Tecnologias")
+                putExtra("EH_TREINO_LIVRE", true)
+            }
+            startActivity(intent)
+        }
+
+        configurarBuscasPopulares(view)
+    }
+
+    private fun configurarBuscasPopulares(view: View) {
+        val temasDisponiveis = listOf(
+            "Bhaskara", "Mitose", "Crase", "Revolução Francesa",
+            "Estequiometria", "Modernismo", "Guerra Fria", "Leis de Newton",
+            "Tabela Periódica", "Globalização", "Geometria Espacial", "Sintaxe"
+        )
+
+        // Seleciona 4 temas aleatórios baseados no dia do mês para manter consistência no mesmo dia
+        val diaDoMes = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_MONTH)
+        val random = java.util.Random(diaDoMes.toLong())
+        val temasHoje = temasDisponiveis.shuffled(random).take(4)
+
+        val chipsIds = listOf(R.id.chipBhaskara, R.id.chipMitose, R.id.chipCrase, R.id.chipRevolucao)
+
+        chipsIds.forEachIndexed { index, id ->
+            val button = view.findViewById<MaterialButton>(id)
+            val tema = temasHoje.getOrNull(index) ?: temasDisponiveis[index]
+
+            button.text = tema
+            button.setOnClickListener {
+                mostrarDialogoEscolha(tema)
+            }
+        }
+    }
+
+    private fun mostrarDialogoEscolha(materia: String) {
+        val dialog = BottomSheetDialog(requireContext())
+        val view = layoutInflater.inflate(R.layout.dialog_format_choice, null)
+
+        view.findViewById<TextView>(R.id.txtDialogTitle).text = materia
+
+        view.findViewById<View>(R.id.cardOptionTexto).setOnClickListener {
+            abrirExplonacao(materia, "TEXTO")
+            dialog.dismiss()
+        }
+
+        view.findViewById<View>(R.id.cardOptionMapa).setOnClickListener {
+            abrirExplonacao(materia, "MAPA_MENTAL")
+            dialog.dismiss()
+        }
+
+        dialog.setContentView(view)
+        dialog.show()
     }
 
     // Função auxiliar para disparar a Intent com as duas chaves necessárias

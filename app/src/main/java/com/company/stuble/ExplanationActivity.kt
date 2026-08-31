@@ -1,5 +1,6 @@
 package com.company.stuble
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,6 +16,11 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+import android.graphics.Paint
+import android.graphics.pdf.PdfDocument
+import android.widget.Toast
+import androidx.core.content.FileProvider
+import java.io.File
 
 data class TopicoMapa(
     val titulo: String,
@@ -22,6 +28,8 @@ data class TopicoMapa(
 )
 
 class ExplanationActivity : AppCompatActivity() {
+    private var topicosAtuais =
+        emptyList<TopicoMapa>()
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
@@ -46,6 +54,12 @@ class ExplanationActivity : AppCompatActivity() {
 
         findViewById<MaterialButton>(R.id.btnBackExplanation).setOnClickListener {
             finish()
+        }
+
+        findViewById<MaterialButton>(R.id.btnGerarPdfMapa).setOnClickListener {
+            if (topicosAtuais.isNotEmpty()) {
+                gerarPdfCompleto(materiaPesquisada, topicosAtuais)
+            }
         }
 
         buscarConteudoIA(materiaPesquisada, tipoConteudo)
@@ -124,6 +138,7 @@ class ExplanationActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.txtExplanationContent).visibility = View.VISIBLE
         findViewById<RecyclerView>(R.id.recyclerMapaMental).visibility = View.GONE
+        findViewById<MaterialButton>(R.id.btnGerarPdfMapa).visibility = View.GONE
 
         findViewById<TextView>(R.id.txtExplanationContent).text =
             "O Mentor IA está estruturando seu conteúdo... Aguarde ;)"
@@ -167,8 +182,10 @@ class ExplanationActivity : AppCompatActivity() {
                         if (tipoConteudo == "MAPA_MENTAL") {
                             exibirMapaMental(textoIA)
                         } else {
+                            findViewById<MaterialButton>(R.id.btnGerarPdfMapa).visibility = View.GONE
+                            val textoFormatado = formatarTextoIA(textoIA)
                             findViewById<TextView>(R.id.txtExplanationContent).text =
-                                textoIA
+                                textoFormatado
                         }
                     }
 
@@ -184,7 +201,22 @@ class ExplanationActivity : AppCompatActivity() {
         })
     }
 
+    private fun formatarTextoIA(texto: String): String {
+        return texto
+            .replace(Regex("\\*\\*"), "") // Remove bold markdown
+            .replace(Regex("###"), "")    // Remove headers
+            .replace(Regex("##"), "")
+            .replace(Regex("#"), "")
+            .replace(Regex("^\\*\\s+", RegexOption.MULTILINE), "• ") // Marcadores
+            .replace(Regex("(?m)^-\\s+"), "• ") // Outro tipo de marcador
+            .replace(Regex("\\n{3,}"), "\n\n") // Evita muitos espaços vazios
+            .trim()
+    }
+
     private fun exibirMapaMental(jsonTexto: String) {
+
+        val listaTopicos = mutableListOf<TopicoMapa>()
+
         try {
             val jsonLimpo = jsonTexto
                 .replace("```json", "")
@@ -216,7 +248,11 @@ class ExplanationActivity : AppCompatActivity() {
                 )
             }
 
+            this.topicosAtuais = listaTopicos
+
             findViewById<TextView>(R.id.txtExplanationContent).visibility = View.GONE
+
+            findViewById<MaterialButton>(R.id.btnGerarPdfMapa).visibility = View.VISIBLE
 
             val recycler = findViewById<RecyclerView>(R.id.recyclerMapaMental)
             recycler.visibility = View.VISIBLE
@@ -233,4 +269,223 @@ class ExplanationActivity : AppCompatActivity() {
                 "A IA não conseguiu gerar um mapa mental válido. Tente pesquisar novamente."
         }
     }
+    private fun gerarPdfCompleto(
+        tituloMapa: String,
+        topicos: List<TopicoMapa>
+    ) {
+
+        val document = PdfDocument()
+
+        var numeroPagina = 1
+
+        var pageInfo = PdfDocument.PageInfo.Builder(
+            595,
+            842,
+            numeroPagina
+        ).create()
+
+        var page = document.startPage(pageInfo)
+
+        var canvas = page.canvas
+
+        val tituloPaint = Paint().apply {
+            color = android.graphics.Color.rgb(
+                79,
+                70,
+                229
+            )
+            textSize = 26f
+            isFakeBoldText = true
+            isAntiAlias = true
+        }
+
+        val subtituloPaint = Paint().apply {
+            color = android.graphics.Color.rgb(
+                100,
+                116,
+                139
+            )
+            textSize = 13f
+            isAntiAlias = true
+        }
+
+        val topicoPaint = Paint().apply {
+            color = android.graphics.Color.rgb(
+                79,
+                70,
+                229
+            )
+            textSize = 19f
+            isFakeBoldText = true
+            isAntiAlias = true
+        }
+
+        val textoPaint = Paint().apply {
+            color = android.graphics.Color.rgb(
+                45,
+                50,
+                67
+            )
+            textSize = 14f
+            isAntiAlias = true
+        }
+
+        var y = 55f
+
+        canvas.drawText(
+            tituloMapa,
+            40f,
+            y,
+            tituloPaint
+        )
+
+        y += 28f
+
+        canvas.drawText(
+            "Mapa mental gerado pelo Mentor IA do Stuble",
+            40f,
+            y,
+            subtituloPaint
+        )
+
+        y += 45f
+
+        for (topico in topicos) {
+
+            // Verifica se ainda existe espaço suficiente
+            // para o título e pelo menos um item.
+            if (y > 770f) {
+
+                document.finishPage(page)
+
+                numeroPagina++
+
+                pageInfo = PdfDocument.PageInfo.Builder(
+                    595,
+                    842,
+                    numeroPagina
+                ).create()
+
+                page = document.startPage(pageInfo)
+
+                canvas = page.canvas
+
+                y = 55f
+            }
+
+            canvas.drawText(
+                topico.titulo,
+                40f,
+                y,
+                topicoPaint
+            )
+
+            y += 28f
+
+            for (item in topico.itens) {
+
+                if (y > 800f) {
+
+                    document.finishPage(page)
+
+                    numeroPagina++
+
+                    pageInfo =
+                        PdfDocument.PageInfo.Builder(
+                            595,
+                            842,
+                            numeroPagina
+                        ).create()
+
+                    page = document.startPage(pageInfo)
+
+                    canvas = page.canvas
+
+                    y = 55f
+                }
+
+                canvas.drawText(
+                    "• $item",
+                    50f,
+                    y,
+                    textoPaint
+                )
+
+                y += 25f
+            }
+
+            y += 18f
+        }
+
+        document.finishPage(page)
+
+        try {
+
+            val pasta = File(
+                cacheDir,
+                "mapas_mentais"
+            )
+
+            if (!pasta.exists()) {
+                pasta.mkdirs()
+            }
+
+            val arquivo = File(
+                pasta,
+                "mapa_mental_${System.currentTimeMillis()}.pdf"
+            )
+
+            document.writeTo(
+                arquivo.outputStream()
+            )
+
+            document.close()
+
+            compartilharPdf(arquivo)
+
+        } catch (e: Exception) {
+
+            document.close()
+
+            Toast.makeText(
+                this,
+                "Não foi possível gerar o PDF.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+    private fun compartilharPdf(
+        arquivo: File
+    ) {
+
+        val uri = FileProvider.getUriForFile(
+            this,
+            "${packageName}.fileprovider",
+            arquivo
+        )
+
+        val intent = Intent(
+            Intent.ACTION_SEND
+        ).apply {
+
+            type = "application/pdf"
+
+            putExtra(
+                Intent.EXTRA_STREAM,
+                uri
+            )
+
+            addFlags(
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+        }
+
+        startActivity(
+            Intent.createChooser(
+                intent,
+                "Compartilhar mapa mental"
+            )
+        )
+    }
+
 }
