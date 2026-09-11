@@ -119,7 +119,25 @@ class LoginEmailActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.d("LOGIN", "Sucesso no Firebase Auth")
-                    irParaHome()
+                    val userId = auth.currentUser?.uid
+                    
+                    if (userId != null) {
+                        // Busca a foto no banco para sincronizar localmente
+                        database.child("usuarios").child(userId).get().addOnSuccessListener { snapshot ->
+                            val fotoUrl = snapshot.child("fotoUrl").value?.toString()
+                            if (!fotoUrl.isNullOrEmpty()) {
+                                getSharedPreferences("stuble_profile_photo", MODE_PRIVATE)
+                                    .edit()
+                                    .putString(userId, fotoUrl)
+                                    .apply()
+                            }
+                            irParaHome()
+                        }.addOnFailureListener {
+                            irParaHome()
+                        }
+                    } else {
+                        irParaHome()
+                    }
                 } else {
                     val exception = task.exception
                     Log.e("LOGIN", "Falha no Auth: ${exception?.message}")

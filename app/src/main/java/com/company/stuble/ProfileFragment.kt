@@ -77,8 +77,8 @@ class ProfileFragment : Fragment() {
         Glide.with(this)
             .load(fotoLocal ?: user.photoUrl)
             .circleCrop()
-            .placeholder(R.drawable.ic_user_placeholder)
-            .error(R.drawable.ic_user_placeholder)
+            .placeholder(R.drawable.ic_person)
+            .error(R.drawable.ic_person)
             .into(fotoPerfil)
     }
 
@@ -325,7 +325,7 @@ class ProfileFragment : Fragment() {
             Glide.with(this)
                 .load(imageUri)
                 .circleCrop()
-                .placeholder(R.drawable.ic_user_placeholder)
+                .placeholder(R.drawable.ic_person)
                 .into(it)
         }
 

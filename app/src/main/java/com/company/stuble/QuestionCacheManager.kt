@@ -273,9 +273,9 @@ object QuestionCacheManager {
         pergunta: Pergunta
     ): Boolean {
         return pergunta.pergunta.isNotBlank() &&
-                pergunta.opcoes.size == 4 &&
+                pergunta.opcoes.size >= 4 &&
                 pergunta.opcoes.none { it.isBlank() } &&
-                pergunta.correta in 0..3 &&
+                pergunta.correta in pergunta.opcoes.indices &&
                 pergunta.explicacao.isNotBlank()
     }
 

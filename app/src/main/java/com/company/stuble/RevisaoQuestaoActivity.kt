@@ -1,6 +1,7 @@
 package com.company.stuble
 
 import android.os.Bundle
+import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -67,16 +68,24 @@ class RevisaoQuestaoActivity : AppCompatActivity() {
         txtEnunciado.text = pergunta.pergunta
         cardExplicacao.isVisible = false
 
-        val opcoes = listOf(
-            findViewById<RadioButton>(R.id.revisaoOpt1),
-            findViewById<RadioButton>(R.id.revisaoOpt2),
-            findViewById<RadioButton>(R.id.revisaoOpt3),
-            findViewById<RadioButton>(R.id.revisaoOpt4)
+        val opcoes = listOfNotNull(
+            findViewById<RadioButton?>(R.id.revisaoOpt1),
+            findViewById<RadioButton?>(R.id.revisaoOpt2),
+            findViewById<RadioButton?>(R.id.revisaoOpt3),
+            findViewById<RadioButton?>(R.id.revisaoOpt4),
+            findViewById<RadioButton?>(R.id.revisaoOpt5)
         )
 
-        opcoes.forEachIndexed { indice, radioButton ->
-            radioButton.text = pergunta.opcoes.getOrNull(indice).orEmpty()
+        // Esconde todas as opções primeiro
+        opcoes.forEach { it.visibility = View.GONE }
+
+        pergunta.opcoes.forEachIndexed { indice, texto ->
+            val radioButton = opcoes.getOrNull(indice) ?: return@forEachIndexed
+            radioButton.text = texto
             radioButton.tag = indice
+            radioButton.visibility = View.VISIBLE
+            radioButton.isEnabled = true
+            radioButton.isChecked = false
         }
     }
 

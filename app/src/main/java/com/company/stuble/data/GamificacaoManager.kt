@@ -150,7 +150,7 @@ object GamificacaoManager {
         val maiorSequenciaAntes =
             preferencias.getInt(KEY_MAIOR_SEQUENCIA, 0)
 
-        var xpGanho = XP_RESPONDER + if (acertou) XP_ACERTAR else 0
+        var xpGanho = if (acertou) (XP_RESPONDER + XP_ACERTAR) else 0
 
         val editor = preferencias.edit()
             .putInt(KEY_TOTAL_QUESTOES, totalAntes + 1)

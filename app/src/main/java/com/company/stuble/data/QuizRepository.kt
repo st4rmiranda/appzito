@@ -19,8 +19,11 @@ class QuizRepository(
         GeminiQuestionService()
 ) {
 
+    private val localRepository = LocalQuestionRepository(context)
+
     companion object {
         private const val TAG = "QuizRepository"
+        private const val PROBABILIDADE_LOCAL = 0.3 // 30% de chance de vir local
     }
 
     private val indiceArea = AtomicInteger(0)
@@ -37,6 +40,16 @@ class QuizRepository(
         dificuldade: String
     ): QuestionLoadResult {
         val area = escolherArea(filtroArea)
+
+        // Integração Contínua: Intercalando com questões locais
+        if (Math.random() < PROBABILIDADE_LOCAL) {
+            localRepository.obterPerguntaAleatoria(area)?.let {
+                return QuestionLoadResult(
+                    pergunta = it,
+                    origem = "local"
+                )
+            }
+        }
 
         QuestionCacheManager
             .obterProximaPergunta(context, filtroArea)
@@ -97,6 +110,9 @@ class QuizRepository(
                 origem = "gemini"
             )
         } catch (erro: Exception) {
+            // Rede de Segurança: Interceptando falhas da API
+            Log.e(TAG, "Falha na API Gemini: ${erro.message}. Usando fallback local.")
+
             val cache = QuestionCacheManager
                 .obterProximaPergunta(context, null)
 
@@ -107,12 +123,22 @@ class QuizRepository(
                     mensagemErro = erro.message
                 )
             } else {
-                QuestionLoadResult(
-                    pergunta = null,
-                    origem = "erro",
-                    mensagemErro = erro.message
-                        ?: "Não foi possível carregar a questão."
-                )
+                // Se o cache estiver vazio, usa o banco de dados local instantaneamente
+                val local = localRepository.obterPerguntaAleatoria(area)
+                if (local != null) {
+                    QuestionLoadResult(
+                        pergunta = local,
+                        origem = "local_fallback",
+                        mensagemErro = erro.message
+                    )
+                } else {
+                    QuestionLoadResult(
+                        pergunta = null,
+                        origem = "erro",
+                        mensagemErro = erro.message
+                            ?: "Não foi possível carregar a questão."
+                    )
+                }
             }
         }
     }

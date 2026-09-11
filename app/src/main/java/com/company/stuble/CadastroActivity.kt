@@ -37,9 +37,14 @@ class CadastroActivity : AppCompatActivity() {
 
     private var imageUri: Uri? = null
 
-    private val selectImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+    private val selectImageLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri != null) {
             imageUri = uri
+            try {
+                contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            } catch (e: SecurityException) {
+                Log.e("CADASTRO", "Erro ao persistir permissão: ${e.message}")
+            }
             imgPerfil.setImageURI(uri)
         }
     }
@@ -61,7 +66,7 @@ class CadastroActivity : AppCompatActivity() {
         progressCadastro = findViewById(R.id.progressCadastro)
 
         btnEscolherFoto.setOnClickListener {
-            selectImageLauncher.launch("image/*")
+            selectImageLauncher.launch(arrayOf("image/*"))
         }
 
         btnCadastrar.setOnClickListener {
@@ -161,33 +166,40 @@ class CadastroActivity : AppCompatActivity() {
                         if (profileTask.isSuccessful) {
                             Log.d("CADASTRO", "Profile display name atualizado")
                         }
-                    }
 
-                    val usuario = mutableMapOf(
-                        "nome" to nome,
-                        "email" to email,
-                        "uid" to userId
-                    )
-
-                    imageUri?.let {
-                        usuario["fotoUrl"] = it.toString()
-                    }
-
-                    database
-                        .child("usuarios")
-                        .child(userId)
-                        .setValue(usuario)
-                        .addOnSuccessListener {
-                            Log.d("CADASTRO", "Dados salvos no Realtime Database")
-                            Toast.makeText(this, "Bem-vindo ao Stuble, $nome! ✨", Toast.LENGTH_SHORT).show()
-                            abrirPersonalizacao()
+                        // SALVA A FOTO LOCALMENTE (Para o ProfileFragment encontrar mesmo com perca de sessão)
+                        imageUri?.let { uri ->
+                            getSharedPreferences("stuble_profile_photo", MODE_PRIVATE)
+                                .edit()
+                                .putString(userId, uri.toString())
+                                .apply()
                         }
-                        .addOnFailureListener { erro ->
-                            Log.e("CADASTRO", "Erro ao salvar no banco: ${erro.message}")
-                            restaurarBotao()
-                            Toast.makeText(this, "Conta criada, mas houve um erro ao salvar dados. Tente atualizar seu perfil depois.", Toast.LENGTH_LONG).show()
-                            abrirPersonalizacao()
+
+                        val usuario = mutableMapOf(
+                            "nome" to nome,
+                            "email" to email,
+                            "uid" to userId
+                        )
+
+                        imageUri?.let {
+                            usuario["fotoUrl"] = it.toString()
                         }
+
+                        database
+                            .child("usuarios")
+                            .child(userId)
+                            .setValue(usuario)
+                            .addOnSuccessListener {
+                                Log.d("CADASTRO", "Dados salvos no Realtime Database")
+                                Toast.makeText(this, "Bem-vindo ao Stuble, $nome! ✨", Toast.LENGTH_SHORT).show()
+                                abrirPersonalizacao()
+                            }
+                            .addOnFailureListener { erro ->
+                                Log.e("CADASTRO", "Erro ao salvar no banco: ${erro.message}")
+                                restaurarBotao()
+                                Toast.makeText(this, "Erro ao salvar dados no banco. Tente novamente.", Toast.LENGTH_LONG).show()
+                            }
+                    }
 
                 } else {
                     val exception = task.exception

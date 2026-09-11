@@ -20,6 +20,7 @@
             app:icon="@drawable/ic_back"
             app:iconTint="#2D3243"
             app:iconGravity="textStart"
+            app:iconPadding="0dp"
 
             app:backgroundTint="#FFFFFF"
             app:strokeColor="#E0E0E0"
@@ -138,6 +139,19 @@
                         android:text="Alternativa D"
                         android:textColor="#2D3243"
                         android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/opt5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_opcao_quiz"
+                        android:button="@null"
+                        android:padding="18dp"
+                        android:text="Alternativa E"
+                        android:textColor="#2D3243"
+                        android:textSize="16sp"
+                        android:visibility="gone" />
                 </RadioGroup>
 
                 <com.google.android.material.card.MaterialCardView

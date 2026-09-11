@@ -297,10 +297,11 @@ class QuizActivity : AppCompatActivity() {
             findViewById<RadioButton?>(R.id.opt1),
             findViewById<RadioButton?>(R.id.opt2),
             findViewById<RadioButton?>(R.id.opt3),
-            findViewById<RadioButton?>(R.id.opt4)
+            findViewById<RadioButton?>(R.id.opt4),
+            findViewById<RadioButton?>(R.id.opt5)
         )
 
-        if (opcoes.size != 4) {
+        if (opcoes.size < 4) {
             ultimaMensagemErro =
                 "As alternativas não foram encontradas no layout activity_quiz.xml."
             Log.e(TAG, ultimaMensagemErro)
@@ -308,8 +309,12 @@ class QuizActivity : AppCompatActivity() {
             return
         }
 
-        opcoes.forEachIndexed { indice, radioButton ->
-            radioButton.text = pergunta.opcoes.getOrNull(indice).orEmpty()
+        // Esconde todas primeiro
+        opcoes.forEach { it.visibility = View.GONE }
+
+        pergunta.opcoes.forEachIndexed { indice, texto ->
+            val radioButton = opcoes.getOrNull(indice) ?: return@forEachIndexed
+            radioButton.text = texto
             radioButton.tag = indice
             radioButton.visibility = View.VISIBLE
             radioButton.isEnabled = true
@@ -424,7 +429,9 @@ class QuizActivity : AppCompatActivity() {
     private fun exibirRecompensasGamificacao(
         resultado: ResultadoGamificacao
     ) {
-        animarXpGanho(resultado.xpGanho)
+        if (resultado.xpGanho > 0) {
+            animarXpGanho(resultado.xpGanho)
+        }
 
         if (resultado.subiuNivel) {
             android.app.AlertDialog.Builder(this)
