@@ -83,7 +83,7 @@ class GeminiQuestionService(
         - Não use Markdown.
         - Não escreva nada fora do JSON.
         - O campo "correta" deve ser um número de 0 a 3.
-
+        
         Retorne:
         {
           "area": "$area",
