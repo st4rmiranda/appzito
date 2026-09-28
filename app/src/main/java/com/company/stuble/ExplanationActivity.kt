@@ -37,7 +37,7 @@ class ExplanationActivity : AppCompatActivity() {
         .build()
 
     private val apiKey = BuildConfig.GEMINI_API_KEY
-    private val modeloGemini = "gemini-2.5-flash"
+    private val modeloGemini = "gemini-2.0-flash"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +53,7 @@ class ExplanationActivity : AppCompatActivity() {
             materiaPesquisada.replaceFirstChar { it.uppercase() }
 
         findViewById<MaterialButton>(R.id.btnBackExplanation).setOnClickListener {
-            finish()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         findViewById<MaterialButton>(R.id.btnGerarPdfMapa).setOnClickListener {

@@ -60,8 +60,17 @@ class GeminiQuestionService(
     }
 
     fun fechar() {
-        client.dispatcher.cancelAll()
-        client.connectionPool.evictAll()
+        // Executa todo o processo de cancelamento e limpeza em uma thread em segundo plano,
+        // pois tanto cancelAll() quanto evictAll() podem interagir com sockets ativos/ociosos
+        // e disparar NetworkOnMainThreadException se executados na UI thread principal.
+        Thread {
+            try {
+                client.dispatcher.cancelAll()
+                client.connectionPool.evictAll()
+            } catch (e: Exception) {
+                // Silencioso, pois é apenas limpeza durante o encerramento
+            }
+        }.start()
     }
 
     private fun criarPrompt(

@@ -95,6 +95,7 @@ class LoginEmailActivity : AppCompatActivity() {
         database.child("usuarios").orderByChild("email").equalTo(email)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    if (!activityDisponivel()) return
                     if (snapshot.exists()) {
                         Log.d("LOGIN", "E-mail encontrado no banco, procedendo ao login")
                         fazerLogin(email, senha)
@@ -106,6 +107,7 @@ class LoginEmailActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    if (!activityDisponivel()) return
                     Log.e("LOGIN", "Erro no banco: ${error.message}")
                     restaurarBotao()
                     Toast.makeText(this@LoginEmailActivity, "Erro de conexão: ${error.message}", Toast.LENGTH_SHORT).show()
@@ -117,6 +119,7 @@ class LoginEmailActivity : AppCompatActivity() {
         btnEntrar.text = "Entrando..."
         auth.signInWithEmailAndPassword(email, senha)
             .addOnCompleteListener(this) { task ->
+                if (!activityDisponivel()) return@addOnCompleteListener
                 if (task.isSuccessful) {
                     Log.d("LOGIN", "Sucesso no Firebase Auth")
                     val userId = auth.currentUser?.uid
@@ -124,15 +127,17 @@ class LoginEmailActivity : AppCompatActivity() {
                     if (userId != null) {
                         // Busca a foto no banco para sincronizar localmente
                         database.child("usuarios").child(userId).get().addOnSuccessListener { snapshot ->
+                            if (!activityDisponivel()) return@addOnSuccessListener
                             val fotoUrl = snapshot.child("fotoUrl").value?.toString()
                             if (!fotoUrl.isNullOrEmpty()) {
                                 getSharedPreferences("stuble_profile_photo", MODE_PRIVATE)
                                     .edit()
                                     .putString(userId, fotoUrl)
-                                    .apply()
+                                    .apply() // .apply() é assíncrono e seguro contra NetworkOnMainThread e ANR!
                             }
                             irParaHome()
                         }.addOnFailureListener {
+                            if (!activityDisponivel()) return@addOnFailureListener
                             irParaHome()
                         }
                     } else {
@@ -175,5 +180,9 @@ class LoginEmailActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+
+    private fun activityDisponivel(): Boolean {
+        return !isFinishing && !isDestroyed
     }
 }

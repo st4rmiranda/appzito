@@ -1,18 +1,24 @@
 package com.company.stuble.data
 
 import android.content.Context
+import android.util.Log
 import com.company.stuble.model.Pergunta
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.InputStreamReader
+import java.util.concurrent.Executors
 
 class LocalQuestionRepository(private val context: Context) {
 
     private val gson = Gson()
     private var perguntas: List<Pergunta> = emptyList()
+    private val executor = Executors.newSingleThreadExecutor()
 
     init {
-        carregarPerguntas()
+        // Carrega em background para não travar a abertura/fechamento da Activity
+        executor.execute {
+            carregarPerguntas()
+        }
     }
 
     private fun carregarPerguntas() {
@@ -23,19 +29,22 @@ class LocalQuestionRepository(private val context: Context) {
             val localQuestions: List<LocalQuestion> = gson.fromJson(reader, type)
 
             perguntas = localQuestions.map { it.toPergunta() }
+            Log.d("LocalRepo", "Carregadas ${perguntas.size} perguntas locais.")
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e("LocalRepo", "Erro ao carregar perguntas locais", e)
         }
     }
 
     fun obterPerguntaAleatoria(area: String? = null): Pergunta? {
+        if (perguntas.isEmpty()) return null
+        
         val filtradas = if (area == null) {
             perguntas
         } else {
             perguntas.filter { it.area.contains(area, ignoreCase = true) || area.contains(it.area, ignoreCase = true) }
         }
 
-        if (filtradas.isEmpty() && area != null) {
+        if (filtradas.isEmpty()) {
             return perguntas.randomOrNull()
         }
 

@@ -123,14 +123,15 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun configurarBotaoVoltar() {
-        btnVoltar.setOnClickListener {
-            val intentInicio = Intent(this, MainActivity::class.java).apply {
-                flags =
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
+        btnVoltar.setOnClickListener {        // Criamos uma intenção para a MainActivity
+            val intent = Intent(this, MainActivity::class.java)
 
-            startActivity(intentInicio)
+
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+
+            startActivity(intent)
+
+            // Encerra a QuizActivity atual
             finish()
         }
     }

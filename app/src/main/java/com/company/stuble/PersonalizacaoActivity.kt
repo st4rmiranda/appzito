@@ -1,10 +1,12 @@
 package com.company.stuble
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import android.widget.CheckBox
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.RadioButton
@@ -39,6 +41,7 @@ class PersonalizacaoActivity : AppCompatActivity() {
     private lateinit var containerOpcoes: LinearLayout
     private lateinit var btnVoltar: MaterialButton
     private lateinit var btnContinuar: MaterialButton
+    private lateinit var btnBackHeader: ImageButton
 
     private val etapas = Etapa.values()
     private var indiceEtapa = 0
@@ -73,6 +76,7 @@ class PersonalizacaoActivity : AppCompatActivity() {
         containerOpcoes = findViewById(R.id.containerOpcoes)
         btnVoltar = findViewById(R.id.btnVoltar)
         btnContinuar = findViewById(R.id.btnContinuar)
+        btnBackHeader = findViewById(R.id.btnBackHeader)
     }
 
     private fun carregarPerfilSalvo() {
@@ -94,9 +98,13 @@ class PersonalizacaoActivity : AppCompatActivity() {
             if (indiceEtapa > 0) {
                 indiceEtapa--
                 renderizarEtapa()
-            } else if (modoEdicao) {
-                finish()
+            } else {
+                onBackPressedDispatcher.onBackPressed()
             }
+        }
+
+        btnBackHeader.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
         }
 
         btnContinuar.setOnClickListener {
@@ -202,6 +210,7 @@ class PersonalizacaoActivity : AppCompatActivity() {
                 id = View.generateViewId()
                 text = opcao
                 textSize = 16f
+                setTextColor(Color.BLACK)
                 minHeight = dp(52)
                 setPadding(dp(8), dp(8), dp(8), dp(8))
                 isChecked = opcao == opcaoMarcada
@@ -259,6 +268,7 @@ class PersonalizacaoActivity : AppCompatActivity() {
                 id = View.generateViewId()
                 text = opcao
                 textSize = 16f
+                setTextColor(Color.BLACK)
                 minHeight = dp(52)
                 setPadding(dp(8), dp(8), dp(8), dp(8))
                 isChecked = opcao in marcadas

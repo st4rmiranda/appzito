@@ -20,16 +20,22 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+    private var estaVisivel = false
 
-    // 1. O SEGREDO ESTÁ AQUI: O ciclo de vida onStart
     override fun onStart() {
         super.onStart()
-        // Checa se o usuário já está logado no Firebase
+        estaVisivel = true
+        
+        // Checa se o usuário já está logado no Firebase e se a tela está em primeiro plano
         val usuarioAtual = auth.currentUser
-        if (usuarioAtual != null) {
-            // Se existir um usuário, vai direto para a MainActivity
+        if (usuarioAtual != null && estaVisivel) {
             irParaHome()
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        estaVisivel = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,14 +81,14 @@ class LoginActivity : AppCompatActivity() {
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
-            if (task.isSuccessful) {
+            if (task.isSuccessful && !isFinishing && !isDestroyed) {
                 irParaHome()
             }
         }
     }
 
-    // Função auxiliar para não repetir código
     private fun irParaHome() {
+        if (isFinishing || isDestroyed) return
         val intent = Intent(this, MainActivity::class.java)
         // Essas flags impedem que o usuário volte para o Login clicando no botão "Voltar" do celular
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

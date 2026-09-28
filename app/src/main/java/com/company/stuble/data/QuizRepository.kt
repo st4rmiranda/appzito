@@ -5,7 +5,6 @@ import android.util.Log
 import com.company.stuble.QuestionCacheManager
 import com.company.stuble.model.Pergunta
 import java.io.IOException
-import java.util.concurrent.atomic.AtomicInteger
 
 data class QuestionLoadResult(
     val pergunta: Pergunta?,
@@ -15,18 +14,16 @@ data class QuestionLoadResult(
 
 class QuizRepository(
     private val context: Context,
-    private val service: GeminiQuestionService =
-        GeminiQuestionService()
+    private val service: GeminiQuestionService = GeminiQuestionService()
 ) {
-
     private val localRepository = LocalQuestionRepository(context)
+    private val prefs = context.getSharedPreferences("quiz_rotation_prefs", Context.MODE_PRIVATE)
 
     companion object {
         private const val TAG = "QuizRepository"
         private const val PROBABILIDADE_LOCAL = 0.25 
+        private const val KEY_INDICE_AREA = "indice_area_persistente"
     }
-
-    private val indiceArea = AtomicInteger(0)
 
     private val areas = listOf(
         "Linguagens e Códigos",
@@ -35,60 +32,36 @@ class QuizRepository(
         "Matemática"
     )
 
-    fun obterProximaPergunta(
-        filtroArea: String?,
-        dificuldade: String
-    ): QuestionLoadResult {
-        
-        // 1. Tenta buscar do Cache Primeiro (Evita incrementar indiceArea desnecessariamente)
-        QuestionCacheManager
-            .obterProximaPergunta(context, filtroArea)
-            ?.let {
-                return QuestionLoadResult(
-                    pergunta = it,
-                    origem = "cache"
-                )
-            }
+    fun obterProximaPergunta(filtroArea: String?, dificuldade: String): QuestionLoadResult {
+        val areaDesejada = escolherAreaSemAvançar(filtroArea)
 
-        // 2. Se não tem cache, define a área e tenta Local ou API
-        val area = escolherAreaSemIncrementar(filtroArea)
+        // Tenta Cache com validação rigorosa
+        QuestionCacheManager.obterProximaPergunta(context, areaDesejada)?.let {
+            avançarAreaSeNecessario(filtroArea)
+            return QuestionLoadResult(pergunta = it, origem = "cache")
+        }
 
-        // Tenta Local (Garantindo que não seja repetida)
+        // Tenta Local (Garantindo que nunca repita no mesmo dia)
         if (Math.random() < PROBABILIDADE_LOCAL) {
-            val local = obterPerguntaLocalNaoUsada(area)
-            if (local != null) {
-                confirmarConsumoDeArea(filtroArea)
-                return QuestionLoadResult(pergunta = local, origem = "local")
+            obterPerguntaLocalNaoUsada(areaDesejada)?.let {
+                avançarAreaSeNecessario(filtroArea)
+                return QuestionLoadResult(pergunta = it, origem = "local")
             }
         }
 
-        // 3. Tenta gerar via IA
-        val resultado = gerarComFallback(area, dificuldade)
-        if (resultado.pergunta != null) {
-            confirmarConsumoDeArea(filtroArea)
-        }
-        return resultado
+        return gerarComFallback(areaDesejada, dificuldade, filtroArea)
     }
 
-    fun precarregarUmaPergunta(
-        filtroArea: String?,
-        dificuldade: String
-    ) {
-        if (QuestionCacheManager.quantidade(context, filtroArea) >= 2) return
-
-        // No preload, usamos a área que seria a "próxima" na sequência
-        val area = escolherAreaSemIncrementar(filtroArea)
-
+    fun precarregarUmaPergunta(filtroArea: String?, dificuldade: String) {
+        if (QuestionCacheManager.quantidade(context, filtroArea) >= 3) return
+        val area = escolherAreaSemAvançar(filtroArea)
         try {
             val pergunta = gerarComRetry(area, dificuldade)
             QuestionCacheManager.salvarPergunta(context, pergunta)
-        } catch (erro: Exception) {
-            Log.w(TAG, "Falha no preload: ${erro.message}")
-        }
+        } catch (e: Exception) { Log.w(TAG, "Preload falhou") }
     }
 
     private fun obterPerguntaLocalNaoUsada(area: String): Pergunta? {
-        // Tenta buscar uma local que não foi usada hoje (máximo 5 tentativas para performance)
         repeat(5) {
             val p = localRepository.obterPerguntaAleatoria(area)
             if (p != null && !QuestionCacheManager.foiUsadaHoje(context, p)) {
@@ -99,27 +72,17 @@ class QuizRepository(
         return null
     }
 
-    private fun gerarComFallback(
-        area: String,
-        dificuldade: String
-    ): QuestionLoadResult {
+    private fun gerarComFallback(area: String, dificuldade: String, filtro: String?): QuestionLoadResult {
         return try {
-            val pergunta = gerarComRetry(area, difficulty = dificuldade)
+            val pergunta = gerarComRetry(area, dificuldade)
             QuestionCacheManager.marcarComoUsada(context, pergunta)
+            avançarAreaSeNecessario(filtro)
             QuestionLoadResult(pergunta = pergunta, origem = "gemini")
         } catch (erro: Exception) {
-            Log.e(TAG, "Erro Gemini: ${erro.message}. Tentando fallback local.")
-            
-            val local = obterPerguntaLocalNaoUsada(area)
-            if (local != null) {
-                QuestionLoadResult(pergunta = local, origem = "local_fallback")
-            } else {
-                QuestionLoadResult(
-                    pergunta = null, 
-                    origem = "erro", 
-                    mensagemErro = "Ops! Estamos sem conexão e sem questões novas no estoque."
-                )
-            }
+            obterPerguntaLocalNaoUsada(area)?.let {
+                avançarAreaSeNecessario(filtro)
+                QuestionLoadResult(pergunta = it, origem = "local_fallback")
+            } ?: QuestionLoadResult(pergunta = null, origem = "erro", mensagemErro = "Estamos sem conexão. Tente outra matéria!")
         }
     }
 
@@ -131,17 +94,19 @@ class QuizRepository(
                 if (!QuestionCacheManager.foiUsadaHoje(context, p)) return p
             } catch (e: Exception) { ultimaEx = e }
         }
-        throw ultimaEx ?: IllegalStateException("Erro ao gerar")
+        throw ultimaEx ?: IllegalStateException("IA repetindo questões.")
     }
 
-    private fun escolherAreaSemIncrementar(filtroArea: String?): String {
-        if (!filtroArea.isNullOrBlank()) return filtroArea
-        return areas[indiceArea.get() % areas.size]
+    private fun escolherAreaSemAvançar(filtro: String?): String {
+        if (!filtro.isNullOrBlank()) return filtro
+        val index = prefs.getInt(KEY_INDICE_AREA, 0)
+        return areas[index % areas.size]
     }
 
-    private fun confirmarConsumoDeArea(filtroArea: String?) {
-        if (filtroArea.isNullOrBlank()) {
-            indiceArea.incrementAndGet()
+    private fun avançarAreaSeNecessario(filtro: String?) {
+        if (filtro.isNullOrBlank()) {
+            val next = prefs.getInt(KEY_INDICE_AREA, 0) + 1
+            prefs.edit().putInt(KEY_INDICE_AREA, next).apply()
         }
     }
 
