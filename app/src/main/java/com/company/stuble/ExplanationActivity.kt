@@ -37,7 +37,9 @@ class ExplanationActivity : AppCompatActivity() {
         .build()
 
     private val apiKey = BuildConfig.GEMINI_API_KEY
-    private val modeloGemini = "gemini-2.0-flash"
+    // Alterado para "gemini-1.5-flash", que é o modelo estável oficial da v1beta da API do Gemini,
+    // evitando o erro 404 causado por nomes de modelos inexistentes ou experimentais desativados.
+    private val modeloGemini = "gemini-3.5-flash"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +68,7 @@ class ExplanationActivity : AppCompatActivity() {
     }
 
     private fun buscarConteudoIA(materia: String, tipoConteudo: String) {
-        val url =
-            "https://generativelanguage.googleapis.com/v1beta/models/$modeloGemini:generateContent?key=$apiKey"
+        val url = "https://generativelanguage.googleapis.com/v1beta/models/$modeloGemini:generateContent"
 
         val promptText = if (tipoConteudo == "MAPA_MENTAL") {
             """
@@ -131,8 +132,10 @@ class ExplanationActivity : AppCompatActivity() {
         val body = jsonBody.toString()
             .toRequestBody("application/json".toMediaType())
 
+        // Configura a requisição incluindo a API Key no Header de forma segura e padronizada
         val request = Request.Builder()
             .url(url)
+            .header("x-goog-api-key", apiKey)
             .post(body)
             .build()
 

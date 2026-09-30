@@ -20,29 +20,18 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
-    private var estaVisivel = false
-
-    override fun onStart() {
-        super.onStart()
-        estaVisivel = true
-        
-        // Checa se o usuário já está logado no Firebase e se a tela está em primeiro plano
-        val usuarioAtual = auth.currentUser
-        if (usuarioAtual != null && estaVisivel) {
-            irParaHome()
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        estaVisivel = false
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-
+        
+        // Se o usuário já estiver logado no Firebase, vai direto para a MainActivity antes de inflar o layout
         auth = Firebase.auth
+        if (auth.currentUser != null) {
+            irParaHome()
+            return
+        }
+
+        setContentView(R.layout.activity_login)
 
         // Configuração do Google Sign-In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -88,7 +77,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun irParaHome() {
-        if (isFinishing || isDestroyed) return
         val intent = Intent(this, MainActivity::class.java)
         // Essas flags impedem que o usuário volte para o Login clicando no botão "Voltar" do celular
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
